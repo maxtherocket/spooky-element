@@ -1,0 +1,23 @@
+{
+  "name": "spooky-element",
+  "version": "0.0.0",
+  "description": "A very scary DOM element wrapper with all the bells and whistles.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://maxtherocket@github.com/maxtherocket/spooky-element.git"
+  },
+  "author": "Max Rusan <max@maxtherocket.com> (http://maxtherocket.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maxtherocket/spooky-element/issues"
+  },
+  "homepage": "https://github.com/maxtherocket/spooky-element",
+  "dependencies": {
+    "inherits": "^2.0.1",
+    "jquery": "^2.1.1"
+  }
+}
