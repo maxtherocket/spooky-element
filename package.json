@@ -6,6 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "browserify": {
+    "transform": [
+      "6to5-browserify",
+      "hbsfy"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://maxtherocket@github.com/maxtherocket/spooky-element.git"
@@ -18,6 +24,20 @@
   "homepage": "https://github.com/maxtherocket/spooky-element",
   "dependencies": {
     "inherits": "^2.0.1",
-    "jquery": "^2.1.1"
+    "jquery": "^2.1.1",
+    "lodash": "~2.4.1",
+    "js-oop": "~1.0.0",
+    "jsface": "~2.2.0",
+    "dom-select": "0.0.0",
+    "new-element": "0.0.2",
+    "insert": "~1.0.1",
+    "domify": "~1.3.1"
+  },
+  "devDependencies": {
+    "6to5-browserify": "~1.1.0",
+    "hbsfy": "~2.2.0",
+    "handlebars": "~2.0.0",
+    "es6ify": "~1.5.1",
+    "js-oop": "~1.0.0"
   }
 }
