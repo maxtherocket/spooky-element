@@ -108,6 +108,22 @@ mixes(SpookyElement, {
     rip: function(){
         if (this.view){ remove(this.view); }
         this.view = null;
+    },
+
+    // CSS Hepers
+    
+    absolute: function(){
+        this.css({
+            position: 'absolute',
+            top: '0px',
+            left: '0px'
+        });
+    },
+
+    z: function(z){
+        this.css({
+            zIndex: z
+        });
     }
 
 });
