@@ -81,23 +81,28 @@ mixes(SpookyElement, {
 
     on: function(event, handler){
         on(this.view, event, handler);
+        return this;
     },
 
     off: function(event, handler){
         on(this.view, event, handler);
+        return this;
     },
 
     css: function(props){
         if (!this.view) return;
         style(this.view, props);
+        return this;
     },
 
     show: function(delay, onComplete){
         if (onComplete) onComplete();
+        return this;
     },
 
     hide: function(delay, onComplete){
         if (onComplete) onComplete();
+        return this;
     },
 
     rip: function(){
