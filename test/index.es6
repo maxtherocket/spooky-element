@@ -1,5 +1,5 @@
 var SpookyEl = require('../index');
-var $ = require('jquery');
+var domready = require('domready');
 var Class = require('jsface').Class;
 
 class ReallySpookyElement extends SpookyEl {
@@ -12,7 +12,8 @@ class ReallySpookyElement extends SpookyEl {
 }
 
 
-$(function(){
+domready(function(){
+
     var basicSpooky = new SpookyEl('<div>BOO!</div>');
 
     var spookyBody = new SpookyEl('body').append(basicSpooky);
@@ -20,6 +21,6 @@ $(function(){
     var reallySpooky = new ReallySpookyElement();
     reallySpooky.appendTo(spookyBody).rip();
 
-    (new SpookyEl(require('./hbs/ReallySpooky.hbs'))).appendTo(spookyBody);
+    new SpookyEl(require('./hbs/ReallySpooky.hbs')).appendTo(spookyBody);
 
 });

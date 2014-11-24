@@ -1,5 +1,3 @@
-var $ = require('jquery');
-var inherits = require('inherits');
 var _ = require('lodash');
 var select = require('dom-select');
 var domify = require('domify');
