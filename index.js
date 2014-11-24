@@ -2,6 +2,8 @@ var _ = require('lodash');
 var select = require('dom-select');
 var style = require('dom-style');
 var domify = require('domify');
+var on = require('dom-event');
+var off = on.off;
 var append = require('insert').append;
 var remove = require('insert').remove;
 var inherits = require('inherits');
@@ -75,6 +77,14 @@ mixes(SpookyElement, {
             return this.template(data);
         }
         return this;
+    },
+
+    on: function(event, handler){
+        on(this.view, event, handler);
+    },
+
+    off: function(event, handler){
+        on(this.view, event, handler);
     },
 
     css: function(props){
