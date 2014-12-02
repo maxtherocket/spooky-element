@@ -31,6 +31,9 @@ domready(function(){
         reallySpooky.rip();
     });
 
-    new SpookyEl(require('./hbs/ReallySpooky.hbs')).appendTo(spookyBody);
+    var reallySpooky = new SpookyEl(require('./hbs/ReallySpooky.hbs')).appendTo(spookyBody);
+
+    var spookyHeading = new SpookyEl('.spooky-heading', reallySpooky);
+    console.log('spookyHeading: ', spookyHeading);
 
 });

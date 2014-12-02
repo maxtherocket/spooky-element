@@ -1,6 +1,6 @@
 {
   "name": "spooky-element",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A very scary DOM element wrapper with all the bells and whistles.",
   "main": "index.js",
   "scripts": {

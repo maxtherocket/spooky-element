@@ -55,11 +55,13 @@ mixes(SpookyElement, {
     },
 
     select: function(selector, context){
+        if (context instanceof SpookyElement){ context = context.view; }
         this.view = select(selector, context);
         return this;
     },
 
     appendTo: function(elOrSelector){
+        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
         var el = elOrSelector;
         if (_.isString(el)){ el = select(el) }
         if (el instanceof SpookyElement){ el = el.view; }
@@ -68,6 +70,7 @@ mixes(SpookyElement, {
     },
 
     append: function(el){
+        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
         append(this.view, el);
         return this;
     },
@@ -80,17 +83,19 @@ mixes(SpookyElement, {
     },
 
     on: function(event, handler){
+        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
         on(this.view, event, handler);
         return this;
     },
 
     off: function(event, handler){
+        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
         on(this.view, event, handler);
         return this;
     },
 
     css: function(props){
-        if (!this.view) return;
+        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
         style(this.view, props);
         return this;
     },

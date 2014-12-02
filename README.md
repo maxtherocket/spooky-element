@@ -4,8 +4,12 @@
 
 // Select an existing element withing the DOM
 // new SpookyElement( selector [, parentSelector] )
+// or
+// new SpookyElement( selector [, spookyElementParent] )
 
+new SpookyElement('.ghost');
 new SpookyElement('.ghost', '#haunted-house');
+new SpookyElement('.ghost', spookyHauntedHouse);
 
 // Provide a DOM element
 // new SpookyElement( domElement );
@@ -16,7 +20,6 @@ new SpookyElement( document.getElementById('boo') );
 // new SpookyElement( templateFunction [, templateData] );
 
 new SpookyElement( require('templates/Boo.hbs'), {autoSpook:true} );
-
 
 // You can also extend a SpookyElement
 // ES6 Syntax here ... spooooky
