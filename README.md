@@ -16,6 +16,11 @@ new SpookyElement('.ghost', spookyHauntedHouse);
 
 new SpookyElement( document.getElementById('boo') );
 
+// Provide an HTML string
+// new SpookyElement( HTMLString );
+
+new SpookyElement( '<div class="boo"></div>' );
+
 // Provide a template function (like handlebars)
 // new SpookyElement( templateFunction [, templateData] );
 

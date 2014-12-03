@@ -14,7 +14,8 @@ var SpookyElement = function(elOrData, parentOrData){
     if (_.isFunction(elOrData)){
         // THis must be a template
         this.template = elOrData;
-        this.view = domify( this.render(parentOrData) );
+        var dom = domify( this.render(parentOrData) );
+        this.view = dom;
     } else if (_.isString(elOrData)){
         if (elOrData.indexOf('<') === 0){
             // This is a tag
@@ -71,13 +72,19 @@ mixes(SpookyElement, {
 
     append: function(el){
         if (!this.view) throw new Error('The view is not defined in this SpookyElement');
+        if (_.isString(el)){
+            // This is an HTML tag or a Text node
+            el = domify(el);
+        }
         append(this.view, el);
         return this;
     },
 
     render: function(data){
         if (this.template && _.isFunction(this.template)){
-            return this.template(data);
+            var templateString = this.template(data);
+            var trimmedString = templateString.replace(/^\s+|\s+$/g, '');
+            return trimmedString;
         }
         return this;
     },

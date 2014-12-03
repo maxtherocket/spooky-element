@@ -31,9 +31,10 @@ domready(function(){
         reallySpooky.rip();
     });
 
-    var reallySpooky = new SpookyEl(require('./hbs/ReallySpooky.hbs')).appendTo(spookyBody);
+    var superSpooky = new SpookyEl(require('./hbs/ReallySpooky.hbs')).appendTo(spookyBody);
 
-    var spookyHeading = new SpookyEl('.spooky-heading', reallySpooky);
-    console.log('spookyHeading: ', spookyHeading);
+    var spookyHeading = new SpookyEl('.spooky-heading', superSpooky);
+    
+    var spookyAppend = new SpookyEl('<div></div>').appendTo(spookyBody).append('Spooky Append');
 
 });
