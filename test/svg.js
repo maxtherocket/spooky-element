@@ -35,6 +35,6 @@ domready(function(){
 
     var spookyHeading = new SpookyEl('.spooky-heading', superSpooky);
     
-    var spookyAppend = new SpookyEl('<div></div>').appendTo(spookyBody).append('Spooky Append').resize(100,100);
+    var spookyAppend = new SpookyEl('<div></div>').appendTo(spookyBody).append('Spooky Append');
 
 });

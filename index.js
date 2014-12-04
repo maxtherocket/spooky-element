@@ -8,6 +8,7 @@ var append = require('insert').append;
 var remove = require('insert').remove;
 var inherits = require('inherits');
 var mixes = require('mixes');
+var addPx = require('add-px');
  
 var SpookyElement = function(elOrData, parentOrData){
     this._view = null;
@@ -114,6 +115,16 @@ mixes(SpookyElement, {
 
     hide: function(delay, onComplete){
         if (onComplete) onComplete();
+        return this;
+    },
+
+    resize: function(w, h){
+        this.width = w;
+        this.height = h;
+        this.css({
+            width: addPx(w),
+            height: addPx(h)
+        });
         return this;
     },
 
