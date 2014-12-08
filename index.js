@@ -9,9 +9,13 @@ var remove = require('insert').remove;
 var inherits = require('inherits');
 var mixes = require('mixes');
 var addPx = require('add-px');
- 
+var Signal = require('signals').Signal; 
+
 var SpookyElement = function(elOrData, parentOrData){
+    
     this._view = null;
+    this.onAppended = new Signal();
+
     if (_.isFunction(elOrData)){
         // THis must be a template
         this.template = elOrData;
@@ -68,6 +72,8 @@ mixes(SpookyElement, {
         if (_.isString(el)){ el = select(el) }
         if (el instanceof SpookyElement){ el = el.view; }
         append(el, this.view);
+        // dispatch
+        this.onAppended.dispatch(this);
         return this;
     },
 
@@ -129,6 +135,7 @@ mixes(SpookyElement, {
     },
 
     rip: function(){
+        this.removeAddedSignals();
         if (this.view){ remove(this.view); }
         this.view = null;
     },
@@ -147,6 +154,47 @@ mixes(SpookyElement, {
         this.css({
             zIndex: z
         });
+    },
+
+    // Signals
+    // Add and keep track of signals for easy removal
+    addSignal: function(signal, handler, once){
+        if (!this._addedSignals) this._addedSignals = [];
+        var signalObj = {
+            signal: signal,
+            handler: handler
+        };
+        // Remove just to be safe
+        this.removeSignal(signal, handler);
+        if (once === true){
+            signalObj.signal.addOnce( signalObj.handler );
+        } else {
+            signalObj.signal.add( signalObj.handler );
+        }
+        this._addedSignals.push( signalObj );
+    },
+
+    removeSignal: function(signal, handler){
+        // Remove signals
+        if (this._addedSignals && this._addedSignals.length){
+            this._addedSignals.some(function(signalObj, i){
+                if (signalObj.signal == signal && signalObj.handler == handler){
+                    signalObj.signal.remove( signalObj.handler );
+                    this._addedSignals.splice(i, 1);
+                    return true;
+                }
+            });
+        }
+    },
+
+    removeAddedSignals: function(){
+        // Remove signals
+        if (this._addedSignals && this._addedSignals.length){
+            this._addedSignals.forEach(function(signalObj){
+                signalObj.signal.remove( signalObj.handler );
+            }
+            this._addedSignals = [];
+        }
     }
 
 });
