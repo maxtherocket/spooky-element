@@ -1,6 +1,5 @@
 var SpookyEl = require('../index');
 var domready = require('domready');
-var Class = require('jsface').Class;
 var tween = require('gsap');
 
 class ReallySpookyElement extends SpookyEl {

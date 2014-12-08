@@ -183,7 +183,7 @@ mixes(SpookyElement, {
                     this._addedSignals.splice(i, 1);
                     return true;
                 }
-            });
+            }.bind(this));
         }
     },
 
@@ -192,7 +192,7 @@ mixes(SpookyElement, {
         if (this._addedSignals && this._addedSignals.length){
             this._addedSignals.forEach(function(signalObj){
                 signalObj.signal.remove( signalObj.handler );
-            }
+            });
             this._addedSignals = [];
         }
     }
