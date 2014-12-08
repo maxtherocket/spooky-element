@@ -51,5 +51,10 @@ domready(function(){
     dispatchSignal.on('click', function(){
         spookySignal.dispatch();
     });
+    var removeAllSignals = new SpookyEl('<div>REMOVE ALL SIGNALS</div>').appendTo(spookyBody);
+    removeAllSignals.on('click', function(){
+        reallySpooky.removeAddedSignals();
+        console.log('AFTER REMOVE reallySpooky._addedSignals: ', reallySpooky._addedSignals);
+    });
 
 });
