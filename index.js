@@ -60,6 +60,10 @@ mixes(SpookyElement, {
         }
     },
 
+    // Called by spooky-router when view parameters have changed
+    paramsChanged: function(){
+    },
+
     select: function(selector, context){
         if (context instanceof SpookyElement){ context = context.view; }
         this.view = select(selector, context);
