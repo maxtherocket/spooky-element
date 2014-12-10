@@ -160,8 +160,9 @@ mixes(SpookyElement, {
 
     // Signals
     // Add and keep track of signals for easy removal
-    addSignal: function(signal, handler, once){
+    addSignal: function(signal, handler, context, once){
         if (!this._addedSignals) this._addedSignals = [];
+        if (_.isObject(context)) handler = handler.bind(context);
         var signalObj = {
             signal: signal,
             handler: handler
@@ -175,6 +176,10 @@ mixes(SpookyElement, {
         }
         this._addedSignals.push( signalObj );
     },
+
+    addSignalOnce: function(signal, handler, context){
+        this.addSignal(signal, handler, context, true);
+    }
 
     removeSignal: function(signal, handler){
         // Remove signals
