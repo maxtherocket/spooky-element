@@ -21,7 +21,7 @@ class ReallySpookyElement extends SpookyEl {
 
 domready(function(){
 
-    var basicSpooky = new SpookyEl('<div>BOO!</div>');
+    var basicSpooky = new SpookyEl('<div>BOO!</div>').css('width', 100).css({background:'#666'});
 
     var spookyBody = new SpookyEl('body').append(basicSpooky);
 

@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var select = require('dom-select');
-var style = require('dom-style');
+var style = require('dom-css');
 var domify = require('domify');
 var on = require('dom-event');
 var off = on.off;
@@ -112,9 +112,13 @@ mixes(SpookyElement, {
         return this;
     },
 
-    css: function(props){
+    css: function(propsOrProperty, styleVal){
         if (!this.view) throw new Error('The view is not defined in this SpookyElement');
-        style(this.view, props);
+        if (styleVal){
+            style(this.view, propsOrProperty, styleVal);
+        } else {
+            style(this.view, propsOrProperty);
+        }
         return this;
     },
 
@@ -132,8 +136,8 @@ mixes(SpookyElement, {
         this.width = w;
         this.height = h;
         this.css({
-            width: addPx(w),
-            height: addPx(h)
+            width: w,
+            height: h
         });
         return this;
     },
@@ -151,12 +155,6 @@ mixes(SpookyElement, {
             position: 'absolute',
             top: '0px',
             left: '0px'
-        });
-    },
-
-    z: function(z){
-        this.css({
-            zIndex: z
         });
     },
 
