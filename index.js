@@ -179,7 +179,7 @@ mixes(SpookyElement, {
 
     addSignalOnce: function(signal, handler, context){
         this.addSignal(signal, handler, context, true);
-    }
+    },
 
     removeSignal: function(signal, handler){
         // Remove signals
