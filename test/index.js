@@ -26,8 +26,8 @@ domready(function(){
     var spookyBody = new SpookyEl('body').append(basicSpooky);
 
     var reallySpooky = new ReallySpookyElement();
-    reallySpooky.appendTo(spookyBody).show(0, function(){
-        reallySpooky.rip();
+    reallySpooky.appendTo(spookyBody).animateIn(0, function(){
+        reallySpooky.destroy();
     });
 
     var superSpooky = new SpookyEl(require('./hbs/ReallySpooky.hbs')).appendTo(spookyBody);

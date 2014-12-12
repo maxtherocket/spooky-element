@@ -8,7 +8,6 @@ var append = require('insert').append;
 var remove = require('insert').remove;
 var inherits = require('inherits');
 var mixes = require('mixes');
-var addPx = require('add-px');
 var Signal = require('signals').Signal; 
 
 var SpookyElement = function(elOrData, parentOrData){
@@ -34,9 +33,6 @@ var SpookyElement = function(elOrData, parentOrData){
     } else if (this.template){
         this.view = domify( this.render(elOrData) );
     }
-    // if (!this.view){
-    //     throw new Error('Could not find or create a DOM element.');
-    // }
 }
 
 // Inherit from Array to make SpookyElement act like a jQuery object
@@ -122,12 +118,12 @@ mixes(SpookyElement, {
         return this;
     },
 
-    show: function(delay, onComplete){
+    animateIn: function(opts, onComplete){
         if (onComplete) onComplete();
         return this;
     },
 
-    hide: function(delay, onComplete){
+    animateOut: function(opts, onComplete){
         if (onComplete) onComplete();
         return this;
     },
@@ -142,7 +138,7 @@ mixes(SpookyElement, {
         return this;
     },
 
-    rip: function(){
+    destroy: function(){
         this.removeAddedSignals();
         if (this.view){ remove(this.view); }
         this.view = null;
@@ -161,6 +157,8 @@ mixes(SpookyElement, {
     // Signals
     // Add and keep track of signals for easy removal
     addSignal: function(signal, handler, context, once){
+        if (!signal) throw new Error('Signal was not provided');
+        if (!signal) throw new Error('handler funciton was not provided');
         if (!this._addedSignals) this._addedSignals = [];
         if (_.isObject(context)) handler = handler.bind(context);
         var signalObj = {
