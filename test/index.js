@@ -1,6 +1,7 @@
 var SpookyEl = require('../index');
 var domready = require('domready');
 var tween = require('gsap');
+var $ = require('jquery');
 
 class ReallySpookyElement extends SpookyEl {
 
@@ -34,6 +35,12 @@ domready(function(){
 
     var spookyHeading = new SpookyEl('.spooky-heading', superSpooky);
     
-    var spookyAppend = new SpookyEl('<div></div>').appendTo(spookyBody).append('Spooky Append').resize(100,100);
+    var spookyAppend = new SpookyEl('<div id="spooky-append"></div>').appendTo(spookyBody).append('Spooky Append').resize(100,100);
+
+    var spookyAppendAppend = new SpookyEl( spookyAppend ).css({background:'#ff0000'});
+
+    var spookyJQuery = new SpookyEl( $('#spooky-append') ).css({background:'#00ff00'});
+
+    var spookyJQueryParent = new SpookyEl( $('#spooky-append'), $('body') ).css({background:'#0000ff'});
 
 });

@@ -12,6 +12,25 @@ var Signal = require('signals').Signal;
 
 var SpookyElement = function(elOrData, parentOrData){
     
+    if (elOrData){
+        // If the passed elemen is already an instance of spooky element, return the passed element
+        if (elOrData instanceof SpookyElement){
+            return elOrData;
+        } else if (elOrData.jquery){
+            // If a jquery object then extract th dom element
+            if (elOrData.length){
+                elOrData = elOrData[0];
+            } else {
+                return this;
+            }
+        }
+    }
+
+    // Parent (context) object could be a jQuery element
+    if (parentOrData && parentOrData.jquery){
+        parentOrData = (parentOrData.length) ? parentOrData[0] : null;
+    }
+
     this._view = null;
     this.onAppended = new Signal();
 
