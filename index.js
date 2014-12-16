@@ -14,7 +14,7 @@ var SpookyElement = function(elOrData, parentOrData){
     
     if (elOrData){
         // If the passed elemen is already an instance of spooky element, return the passed element
-        if (elOrData instanceof SpookyElement){
+        if (elOrData.spooky){
             return elOrData;
         } else if (elOrData.jquery){
             // If a jquery object then extract th dom element
@@ -52,6 +52,10 @@ var SpookyElement = function(elOrData, parentOrData){
     } else if (this.template){
         this.view = domify( this.render(elOrData) );
     }
+
+    // Set this to identify spooky elements
+    this.spooky = true;
+
 }
 
 // Inherit from Array to make SpookyElement act like a jQuery object
@@ -80,7 +84,7 @@ mixes(SpookyElement, {
     },
 
     select: function(selector, context){
-        if (context instanceof SpookyElement){ context = context.view; }
+        if (context && context.spooky){ context = context.view; }
         this.view = select(selector, context);
         return this;
     },
@@ -89,7 +93,7 @@ mixes(SpookyElement, {
         if (!this.view) throw new Error('The view is not defined in this SpookyElement');
         var el = elOrSelector;
         if (_.isString(el)){ el = select(el) }
-        if (el instanceof SpookyElement){ el = el.view; }
+        if (el && el.spooky){ el = el.view; }
         append(el, this.view);
         // dispatch
         this.onAppended.dispatch(this);
