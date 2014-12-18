@@ -10,6 +10,11 @@ var inherits = require('inherits');
 var mixes = require('mixes');
 var Signal = require('signals').Signal; 
 
+/**
+ * Creates or wraps a DOM element.
+ * @class  SpookyElement
+ * @param String
+ */
 var SpookyElement = function(elOrData, parentOrData){
     
     if (elOrData){
@@ -137,6 +142,21 @@ mixes(SpookyElement, {
             style(this.view, propsOrProperty, styleVal);
         } else {
             style(this.view, propsOrProperty);
+        }
+        return this;
+    },
+
+    /**
+     * Sets or returns the innerHTML property of the view
+     * @method  html
+     * @param String html
+     */
+    html: function(html){
+        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
+        if (html){
+            this.view.innerHTML = html;
+        } else {
+            return this.view.innerHTML;
         }
         return this;
     },
