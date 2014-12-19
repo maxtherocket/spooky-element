@@ -4,7 +4,7 @@ A very lightweight wrapper for DOM elements, with a lot of functionality.
 
 Makes working with DOM elements a little less scary :)
 
-[Imgur](http://i.imgur.com/4jTSYHn.png)
+![SPOOKY](http://i.imgur.com/4jTSYHn.png)
 
 ## Installation
 
