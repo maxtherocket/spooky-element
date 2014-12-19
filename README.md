@@ -7,7 +7,7 @@ Makes working with DOM elements a little less scary :)
 - Very versatile and saves you time!
 - Works well with Handlebars, especially with [hbsfy](https://github.com/epeli/node-hbsfy)
 - Works with [GSAP](http://greensock.com/gsap) (TweenLite, TimelineLite, etc.)
-- Extra spooky
+- Extra spooky :ghost:
 
 ![SPOOKY](http://i.imgur.com/Ut23RfP.png)
 
@@ -95,4 +95,4 @@ spooky.css({
 
 ## License MIT
 
-See LICENSE file
+See [LICENSE](LICENSE) file
