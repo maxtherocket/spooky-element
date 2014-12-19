@@ -1,4 +1,5 @@
 var SpookyEl = require('../index');
+var SpookyElement = SpookyEl;
 var domready = require('domready');
 var tween = require('gsap');
 var $ = require('jquery');
@@ -49,5 +50,21 @@ domready(function(){
     var spookyJQuery = new SpookyEl( $('#spooky-append') ).css({background:'#00ff00'});
 
     var spookyJQueryParent = new SpookyEl( $('#spooky-append'), $('body') ).css({background:'#0000ff'});
+
+    var spooky = new SpookyElement( '<div class="boo">BOO!</div>' );
+    spooky.css({
+        fontSize: '40px',
+        fontWeight: 'bold',
+        color: 'red',
+        cursor: 'pointer'
+    })
+    // yes it's chainable
+    .appendTo('body')
+    .on('mousedown', function(){
+        spooky.css('color', 'blue');
+    })
+    .on('mouseup', function(){
+        spooky.css('color', 'red');
+    });
 
 });

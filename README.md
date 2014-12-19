@@ -46,7 +46,7 @@ new SpookyElement( '<div class="boo"></div>' );
 
 // Provide a template function (like handlebars)
 // new SpookyElement( templateFunction [, templateData] );
-// using [hbsfy](https://github.com/epeli/node-hbsfy) browserify transform here, very handy!
+// using hbsfy (https://github.com/epeli/node-hbsfy) browserify transform here, very handy!
 
 new SpookyElement( require('templates/Boo.hbs'), {autoSpook:true} );
 
@@ -70,3 +70,25 @@ class ExtraSpooky extends SpookyElement {
 
 // Pass in data to the template for extra spoookiness
 var extraSpooky = new ExtraSpooky({eyes:'angry', slime:true});
+```
+
+### Basic Usage
+
+```
+var spooky = new SpookyElement( '<div class="boo">BOO!</div>' );
+spooky.css({
+    fontSize: '40px',
+    fontWeight: 'bold',
+    color: 'red',
+    cursor: 'pointer'
+})
+// yes it's chainable
+.appendTo('body')
+.on('mousedown', function(){
+    spooky.css('color', 'blue');
+})
+.on('mouseup', function(){
+    spooky.css('color', 'red');
+});
+
+```
