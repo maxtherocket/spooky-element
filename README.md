@@ -74,7 +74,7 @@ var extraSpooky = new ExtraSpooky({eyes:'angry', slime:true});
 
 ### Basic Usage
 
-```
+```javascript
 var spooky = new SpookyElement( '<div class="boo">BOO!</div>' );
 spooky.css({
     fontSize: '40px',
@@ -92,3 +92,7 @@ spooky.css({
 });
 
 ```
+
+## License MIT
+
+See LICENSE file
