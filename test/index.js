@@ -31,6 +31,13 @@ domready(function(){
         reallySpooky.destroy();
     });
 
+    var ES5Spooky = function(data){
+        this.template = require('./hbs/ES5Spooky.hbs');
+        SpookyEl.call(this, data);
+    }
+    ES5Spooky.prototype = Object.create(SpookyEl.prototype);
+    var es5Spooky = (new ES5Spooky()).appendTo(spookyBody);
+
     var superSpooky = new SpookyEl(require('./hbs/ReallySpooky.hbs')).appendTo(spookyBody);
 
     var spookyHeading = new SpookyEl('.spooky-heading', superSpooky);

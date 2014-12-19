@@ -201,7 +201,7 @@ mixes(SpookyElement, {
     // Add and keep track of signals for easy removal
     addSignal: function(signal, handler, context, once){
         if (!signal) throw new Error('Signal was not provided');
-        if (!signal) throw new Error('handler funciton was not provided');
+        if (!handler) throw new Error('handler funciton was not provided');
         if (!this._addedSignals) this._addedSignals = [];
         if (_.isObject(context)) handler = handler.bind(context);
         var signalObj = {
@@ -248,4 +248,3 @@ mixes(SpookyElement, {
 });
 
 module.exports = SpookyElement;
-
