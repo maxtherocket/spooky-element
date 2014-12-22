@@ -98,6 +98,19 @@ mixes(SpookyElement, {
         return this;
     },
 
+    getElement: function(selector){
+        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!selector){
+            return this.view;
+        } else {
+            return select(selector, this.view);
+        }
+    },
+
+    findElement: function(selector){
+        this.getElement(selector);
+    },
+
     appendTo: function(elOrSelector){
         if (!this.view) throw new Error(noViewErrorMsg);
         var el = elOrSelector;
