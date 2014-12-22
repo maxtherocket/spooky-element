@@ -108,7 +108,7 @@ mixes(SpookyElement, {
     },
 
     findElement: function(selector){
-        this.getElement(selector);
+        return this.getElement(selector);
     },
 
     appendTo: function(elOrSelector){
