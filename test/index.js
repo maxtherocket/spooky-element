@@ -67,4 +67,15 @@ domready(function(){
         spooky.css('color', 'red');
     });
 
+    spooky.attr('width', '400px');
+    var width = spooky.attr('width');
+    console.log('width: ', width);
+
+    spooky.addClass('spookster');
+    var hasClass = spooky.hasClass('spookster');
+    console.log('hasClass: ', hasClass);
+    spooky.removeClass('spookster');
+    hasClass = spooky.hasClass('spookster');
+    console.log('hasClass: ', hasClass);
+
 });

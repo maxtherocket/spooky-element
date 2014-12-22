@@ -1,6 +1,6 @@
 {
   "name": "spooky-element",
-  "version": "1.5.9",
+  "version": "1.7.9",
   "description": "A very scary DOM element wrapper with all the bells and whistles.",
   "main": "index.js",
   "scripts": {
@@ -24,16 +24,18 @@
   },
   "homepage": "https://github.com/maxtherocket/spooky-element",
   "dependencies": {
-    "inherits": "~2.0.1",
-    "lodash": "~2.4.1",
-    "dom-select": "0.0.0",
-    "new-element": "0.0.2",
-    "insert": "~1.0.1",
-    "domify": "~1.3.1",
-    "mixes": "~1.0.4",
+    "atts": "0.0.1",
+    "dom-css": "~1.0.4",
     "dom-event": "0.0.1",
-    "signals": "~1.0.0",
-    "dom-css": "~1.0.4"
+    "dom-select": "0.0.0",
+    "domify": "~1.3.1",
+    "element-class": "^0.2.0",
+    "inherits": "~2.0.1",
+    "insert": "~1.0.1",
+    "lodash": "~2.4.1",
+    "mixes": "~1.0.4",
+    "new-element": "0.0.2",
+    "signals": "~1.0.0"
   },
   "devDependencies": {
     "6to5-browserify": "~1.1.0",

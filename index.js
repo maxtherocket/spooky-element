@@ -8,7 +8,11 @@ var append = require('insert').append;
 var remove = require('insert').remove;
 var inherits = require('inherits');
 var mixes = require('mixes');
-var Signal = require('signals').Signal; 
+var Signal = require('signals').Signal;
+var atts = require('atts');
+var elementClass = require('element-class');
+
+var noViewErrorMsg = 'The view is not defined in this SpookyElement';
 
 /**
  * Creates or wraps a DOM element.
@@ -95,7 +99,7 @@ mixes(SpookyElement, {
     },
 
     appendTo: function(elOrSelector){
-        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
+        if (!this.view) throw new Error(noViewErrorMsg);
         var el = elOrSelector;
         if (_.isString(el)){ el = select(el) }
         if (el && el.spooky){ el = el.view; }
@@ -106,7 +110,7 @@ mixes(SpookyElement, {
     },
 
     append: function(el){
-        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
+        if (!this.view) throw new Error(noViewErrorMsg);
         if (_.isString(el)){
             // This is an HTML tag or a Text node
             el = domify(el);
@@ -125,19 +129,19 @@ mixes(SpookyElement, {
     },
 
     on: function(event, handler){
-        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
+        if (!this.view) throw new Error(noViewErrorMsg);
         on(this.view, event, handler);
         return this;
     },
 
     off: function(event, handler){
-        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
+        if (!this.view) throw new Error(noViewErrorMsg);
         on(this.view, event, handler);
         return this;
     },
 
     css: function(propsOrProperty, styleVal){
-        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
+        if (!this.view) throw new Error(noViewErrorMsg);
         if (styleVal){
             style(this.view, propsOrProperty, styleVal);
         } else {
@@ -146,13 +150,51 @@ mixes(SpookyElement, {
         return this;
     },
 
+    attr: function(name, value){
+        if (!this.view) throw new Error(noViewErrorMsg);
+        if (arguments.length == 2){
+            atts.attr(this.view, name, value);
+            return this;
+        } else if (arguments.length == 1) {
+            return atts.attr(this.view, name);
+        }
+        return this;
+    },
+
+    addClass: function(clas){
+        if (!this.view) throw new Error(noViewErrorMsg);
+        elementClass(this.view).add(clas);
+        return this;
+    },
+
+    removeClass: function(clas){
+        if (!this.view) throw new Error(noViewErrorMsg);
+        elementClass(this.view).remove(clas);
+        return this;
+    },
+
+    hasClass: function(clas){
+        if (!this.view) throw new Error(noViewErrorMsg);
+        return elementClass(this.view).has(clas);
+    },
+
+    getWidth: function(){
+        if (!this.view) throw new Error(noViewErrorMsg);
+        return this.view.offsetWidth;
+    },
+
+    getHeight: function(){
+        if (!this.view) throw new Error(noViewErrorMsg);
+        return this.view.offsetHeight;
+    },
+
     /**
      * Sets or returns the innerHTML property of the view
      * @method  html
      * @param String html
      */
     html: function(html){
-        if (!this.view) throw new Error('The view is not defined in this SpookyElement');
+        if (!this.view) throw new Error(noViewErrorMsg);
         if (html){
             this.view.innerHTML = html;
         } else {
@@ -185,17 +227,7 @@ mixes(SpookyElement, {
         this.removeAddedSignals();
         if (this.view){ remove(this.view); }
         this.view = null;
-    },
-
-    // CSS Hepers
-    
-    absolute: function(){
-        this.css({
-            position: 'absolute',
-            top: '0px',
-            left: '0px'
-        });
-    },
+    }
 
     // Signals
     // Add and keep track of signals for easy removal
