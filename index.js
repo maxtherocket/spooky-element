@@ -227,7 +227,7 @@ mixes(SpookyElement, {
         this.removeAddedSignals();
         if (this.view){ remove(this.view); }
         this.view = null;
-    }
+    },
 
     // Signals
     // Add and keep track of signals for easy removal
