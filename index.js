@@ -238,8 +238,15 @@ mixes(SpookyElement, {
 
     destroy: function(){
         this.removeAddedSignals();
-        if (this.view){ remove(this.view); }
+        if (this.view){ this.remove(); }
         this.view = null;
+    },
+
+    remove: function(){
+        if (!this.view) throw new Error(noViewErrorMsg);
+        remove(this.view);
+        this.view = null;
+        return this;
     },
 
     // Signals
