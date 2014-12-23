@@ -208,7 +208,7 @@ mixes(SpookyElement, {
      */
     html: function(html){
         if (!this.view) throw new Error(noViewErrorMsg);
-        if (html){
+        if (!_.isUndefined(html)){
             this.view.innerHTML = html;
         } else {
             return this.view.innerHTML;
