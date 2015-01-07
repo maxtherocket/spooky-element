@@ -116,6 +116,14 @@ mixes(SpookyElement, {
         return this.getElement(selector);
     },
 
+    find: function(selector){
+        var element = this.getElement();
+        if (element){
+            return new SpookyElement(element);
+        }
+        return null;
+    },
+
     appendTo: function(elOrSelector){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         var el = elOrSelector;
