@@ -117,7 +117,7 @@ mixes(SpookyElement, {
     },
 
     find: function(selector){
-        var element = this.getElement();
+        var element = this.getElement(selector);
         if (element){
             return new SpookyElement(element);
         }
