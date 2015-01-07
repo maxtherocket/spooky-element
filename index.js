@@ -12,7 +12,7 @@ var Signal = require('signals').Signal;
 var atts = require('atts');
 var elementClass = require('element-class');
 
-var noViewErrorMsg = 'The view is not defined in this SpookyElement';
+var NO_VIEW_ERROR_MSG = 'The view is not defined in this SpookyElement';
 
 /**
  * Creates or wraps a DOM element.
@@ -21,6 +21,11 @@ var noViewErrorMsg = 'The view is not defined in this SpookyElement';
  */
 var SpookyElement = function(elOrData, parentOrData){
     
+    // Create an instance if calling without new
+    if (!(this instanceof SpookyElement)){
+        return new SpookyElement(elOrData, parentOrData);
+    }
+
     if (elOrData){
         // If the passed elemen is already an instance of spooky element, return the passed element
         if (elOrData.spooky){
@@ -99,7 +104,7 @@ mixes(SpookyElement, {
     },
 
     getElement: function(selector){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         if (!selector){
             return this.view;
         } else {
@@ -112,7 +117,7 @@ mixes(SpookyElement, {
     },
 
     appendTo: function(elOrSelector){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         var el = elOrSelector;
         if (_.isString(el)){ el = select(el) }
         if (el && el.spooky){ el = el.view; }
@@ -123,7 +128,7 @@ mixes(SpookyElement, {
     },
 
     append: function(el){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         if (_.isString(el)){
             // This is an HTML tag or a Text node
             el = domify(el);
@@ -142,19 +147,19 @@ mixes(SpookyElement, {
     },
 
     on: function(event, handler){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         on(this.view, event, handler);
         return this;
     },
 
     off: function(event, handler){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         on(this.view, event, handler);
         return this;
     },
 
     css: function(propsOrProperty, styleVal){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         if (styleVal){
             style(this.view, propsOrProperty, styleVal);
         } else {
@@ -164,7 +169,7 @@ mixes(SpookyElement, {
     },
 
     attr: function(name, value){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         if (arguments.length == 2){
             atts.attr(this.view, name, value);
             return this;
@@ -175,29 +180,29 @@ mixes(SpookyElement, {
     },
 
     addClass: function(clas){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         elementClass(this.view).add(clas);
         return this;
     },
 
     removeClass: function(clas){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         elementClass(this.view).remove(clas);
         return this;
     },
 
     hasClass: function(clas){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         return elementClass(this.view).has(clas);
     },
 
     getWidth: function(){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         return this.view.offsetWidth;
     },
 
     getHeight: function(){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         return this.view.offsetHeight;
     },
 
@@ -207,7 +212,7 @@ mixes(SpookyElement, {
      * @param String html
      */
     html: function(html){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         if (!_.isUndefined(html)){
             this.view.innerHTML = html;
         } else {
@@ -243,7 +248,7 @@ mixes(SpookyElement, {
     },
 
     remove: function(){
-        if (!this.view) throw new Error(noViewErrorMsg);
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         remove(this.view);
         this.view = null;
         return this;
