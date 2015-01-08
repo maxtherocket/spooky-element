@@ -162,7 +162,7 @@ mixes(SpookyElement, {
 
     off: function(event, handler){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
-        on(this.view, event, handler);
+        off(this.view, event, handler);
         return this;
     },
 
