@@ -1,17 +1,11 @@
 {
   "name": "spooky-element",
-  "version": "1.10.2",
+  "version": "1.11.0",
   "description": "A very scary DOM element wrapper with all the bells and whistles.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "doc": "yuidoc ./"
-  },
-  "browserify": {
-    "transform": [
-      "6to5-browserify",
-      "hbsfy"
-    ]
   },
   "repository": {
     "type": "git",

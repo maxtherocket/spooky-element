@@ -124,6 +124,19 @@ mixes(SpookyElement, {
         return null;
     },
 
+    findAll: function(selector){
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
+        var elements = select.all(selector, this.view);
+        var spookyElements = [];
+        if (elements){
+            for (var i = 0, len = elements.length; i < len; i += 1) {
+                var element = elements[i];
+                spookyElements.push( new SpookyElement(element) );
+            }
+        }
+        return spookyElements;
+    },
+
     appendTo: function(elOrSelector){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         var el = elOrSelector;
