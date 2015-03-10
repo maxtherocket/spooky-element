@@ -179,6 +179,14 @@ mixes(SpookyElement, {
         return this;
     },
 
+    once: function(event, handler) {
+        var that = this;
+        this.on(event, function() {
+            handler();
+            that.off(event, handler);
+        });
+    },
+
     css: function(propsOrProperty, styleVal){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         if (styleVal){
