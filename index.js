@@ -181,10 +181,11 @@ mixes(SpookyElement, {
 
     once: function(event, handler) {
         var that = this;
-        this.on(event, function() {
-            handler();
+        this.on(event, function(e) {
             that.off(event, handler);
+            handler.call(this, e);
         });
+        return this;
     },
 
     css: function(propsOrProperty, styleVal){
