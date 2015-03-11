@@ -69,6 +69,7 @@ var SpookyElement = function(elOrData, parentOrData){
 
     // Set this to identify spooky elements
     this.spooky = true;
+    this._spooky = true;
 
 }
 
