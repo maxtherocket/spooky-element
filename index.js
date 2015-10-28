@@ -5,6 +5,7 @@ var domify = require('domify');
 var on = require('dom-event');
 var off = on.off;
 var append = require('insert').append;
+var prepend = require('insert').append;
 var remove = require('insert').remove;
 var inherits = require('inherits');
 var mixes = require('mixes');
@@ -47,6 +48,7 @@ var SpookyElement = function(elOrData, parentOrData){
 
     this._view = null;
     this.onAppended = new Signal();
+    this.onPrepended = new Signal();
 
     if (_.isFunction(elOrData)){
         // THis must be a template
@@ -149,6 +151,17 @@ mixes(SpookyElement, {
         return this;
     },
 
+    prependTo: function(elOrSelector){
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
+        var el = elOrSelector;
+        if (_.isString(el)){ el = select(el) }
+        if (el && el.spooky){ el = el.view; }
+        prepend(el, this.view);
+        // dispatch
+        this.onPrepended.dispatch(this);
+        return this;
+    },
+
     append: function(el){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         if (_.isString(el)){
@@ -156,6 +169,16 @@ mixes(SpookyElement, {
             el = domify(el);
         }
         append(this.view, el);
+        return this;
+    },
+
+    prepend: function(el){
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
+        if (_.isString(el)){
+            // This is an HTML tag or a Text node
+            el = domify(el);
+        }
+        prepend(this.view, el);
         return this;
     },
 
