@@ -7,13 +7,15 @@ Makes working with DOM elements a little less scary :)
 Couldn't find anything like this, so I've put it together to help me build awesome sites, extra FAST!
 
 - Saves you time
-- Built for performance! Great for creating DOM on the fly
+- Built for performance! Great for creating DOM elemennts on the fly
 - Works well with Handlebars, especially with [hbsfy](https://github.com/epeli/node-hbsfy)
 - Works great with [GSAP](http://greensock.com/gsap) (TweenLite, TimelineLite, etc.)
 - Built on the shoulders of giants
 - Extra spooky :ghost:
 
 ![SPOOKY](http://i.imgur.com/Ut23RfP.png)
+
+*Browser testing is provided by the awesome folks at [BrowserStack](https://www.browserstack.com)*
 
 ## Installation
 
@@ -33,7 +35,7 @@ var SpookyElement = require('spooky-element');
 
 new SpookyElement('.ghost');
 new SpookyElement('.ghost', '#haunted-house');
-// Or without new keyword
+// Or without the new keyword
 SpookyElement('.ghost', spookyElementHauntedHouse);
 
 // Pass in jQuery elements
