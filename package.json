@@ -1,7 +1,7 @@
 {
   "name": "spooky-element",
   "version": "2.0.0",
-  "description": "A very scary DOM element wrapper with all the bells and whistles.",
+  "description": "A lightweight DOM element wrapper with only the essentials (css, on, off, append, prepend ...)",
   "main": "index.js",
   "scripts": {
     "test": "budo test/index.js --live -- -t [ babelify --presets [ es2015 ] ] -t hbsfy",
