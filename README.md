@@ -4,9 +4,13 @@ A very lightweight, jQuery-like wrapper for DOM elements, with a lot of function
 
 Makes working with DOM elements a little less scary :)
 
-- Very versatile and saves you time!
+Couldn't find anything like this, so I've put it together to help me build awesome sites, extra FAST!
+
+- Saves you time
+- Built for performance! Great for creating DOM on the fly
 - Works well with Handlebars, especially with [hbsfy](https://github.com/epeli/node-hbsfy)
-- Works with [GSAP](http://greensock.com/gsap) (TweenLite, TimelineLite, etc.)
+- Works great with [GSAP](http://greensock.com/gsap) (TweenLite, TimelineLite, etc.)
+- Built on the shoulders of giants
 - Extra spooky :ghost:
 
 ![SPOOKY](http://i.imgur.com/Ut23RfP.png)
@@ -17,7 +21,7 @@ Makes working with DOM elements a little less scary :)
 
 ## Usage
 
-### Initializing
+### Feature Examples
 
 ```javascript
 var SpookyElement = require('spooky-element');
@@ -29,7 +33,8 @@ var SpookyElement = require('spooky-element');
 
 new SpookyElement('.ghost');
 new SpookyElement('.ghost', '#haunted-house');
-new SpookyElement('.ghost', spookyHauntedHouse);
+// Or without new keyword
+SpookyElement('.ghost', spookyElementHauntedHouse);
 
 // Pass in jQuery elements
 new SpookyElement($('.ghost'), $('body'));
@@ -92,6 +97,55 @@ spooky.css({
 });
 
 ```
+
+### All The Goods
+
+```javascript
+
+spookyElementInstance.view // Contains the DOM element
+
+getElement(selector) // returns found element within the spooky element
+
+findElement(selector) // alias to getElement()
+
+find(selector) // Returns a found DOM element and wraps it into a SpookyElement
+
+findAll(selector) // Returns an array of all found DOM elements as SpookyElements
+
+appendTo(element) // Appends to either a DOM element or a SpookyElement
+
+prependTo(element) // Prepends to a DOM or a SpookyElement
+
+append(element) // Append a DOM or a SpookyElement
+
+on(event, handler) // Attach an event handler to the element
+
+off(event, handler) // Detach an event handler from the element
+
+css(objectOrProp [, val]) // Modify CSS
+
+attr(attr, val) // Modify attributes
+
+addClass(class) // Add class to element
+
+removeClass(class) // Remove class from element
+
+hasClass(class) // Check if element has class
+
+getWidth() // Get element width
+
+getHeight() // Get element height
+
+html([html]) // Get or set innerHTML
+
+resize(w,h) // Set the width/height of the element
+
+destroy() // Removes element
+
+remove() // Removes element
+
+```
+
 
 ## License MIT
 

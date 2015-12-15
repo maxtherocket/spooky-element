@@ -4,7 +4,8 @@
   "description": "A very scary DOM element wrapper with all the bells and whistles.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "budo test/index.js --live -- -t [ babelify --presets [ es2015 ] ] -t hbsfy",
+    "build": "browserify index.js --standalone SpookyEl -t uglifyify -o build/spooky-element.js && browserify index.js --standalone SpookyEl -t uglifyify | uglifyjs -c > build/spooky-element.min.js",
     "doc": "yuidoc ./"
   },
   "repository": {
@@ -18,26 +19,29 @@
   },
   "homepage": "https://github.com/maxtherocket/spooky-element",
   "dependencies": {
-    "atts": "0.0.1",
-    "dom-css": "~1.0.4",
-    "dom-event": "0.0.1",
-    "dom-select": "0.0.0",
-    "domify": "~1.3.1",
+    "atts": "^0.3.0",
+    "dom-css": "^2.0.0",
+    "dom-event": "0.0.5",
+    "dom-select": "^1.1.0",
+    "domify": "^1.4.0",
     "element-class": "^0.2.0",
-    "inherits": "~2.0.1",
     "insert": "~1.0.1",
-    "lodash": "~2.4.1",
-    "mixes": "~1.0.4",
-    "new-element": "0.0.2",
-    "signals": "~1.0.0"
+    "is-element": "^0.1.0",
+    "is-function": "^1.0.1",
+    "is-string": "^1.0.4",
+    "mixes": "~1.0.4"
   },
   "devDependencies": {
-    "hbsfy": "~2.2.0",
-    "handlebars": "~2.0.0",
-    "es6ify": "~1.5.1",
+    "babel": "^6.3.13",
+    "babel-preset-es2015": "^6.3.13",
+    "babelify": "^7.2.0",
     "domready": "~1.0.7",
-    "gsap": "~1.14.2",
+    "gsap": "^1.18.0",
+    "handlebars": "^4.0.5",
+    "hbsfy": "^2.4.1",
+    "jquery": "~2.1.1",
     "signals": "~1.0.0",
-    "jquery": "~2.1.1"
+    "uglifyify": "^3.0.1",
+    "uglifyjs": "^2.4.10"
   }
 }

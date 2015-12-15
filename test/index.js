@@ -7,8 +7,7 @@ var $ = require('jquery');
 class ReallySpookyElement extends SpookyEl {
 
     constructor() {
-        this.template = require('./hbs/ReallySpooky.hbs');
-        super();
+        super(require('./hbs/ReallySpooky.hbs'));
         this.css({
             opacity: 0
         });

@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var select = require('dom-select');
 var style = require('dom-css');
 var domify = require('domify');
@@ -7,13 +6,19 @@ var off = on.off;
 var append = require('insert').append;
 var prepend = require('insert').prepend;
 var remove = require('insert').remove;
-var inherits = require('inherits');
 var mixes = require('mixes');
 var Signal = require('signals').Signal;
 var atts = require('atts');
 var elementClass = require('element-class');
 
 var NO_VIEW_ERROR_MSG = 'The view is not defined in this SpookyElement';
+
+var isUndefined = function(myVar){
+	return (typeof myVar != 'undefined');
+}
+var isString = require('is-string');
+var isFunction = require('is-function');
+var isElement = require('is-element');
 
 /**
  * Creates or wraps a DOM element.
@@ -29,7 +34,7 @@ var SpookyElement = function(elOrData, parentOrData){
 
     if (elOrData){
         // If the passed elemen is already an instance of spooky element, return the passed element
-        if (elOrData.spooky){
+        if (elOrData._isSpookyElement){
             return elOrData;
         } else if (elOrData.jquery){
             // If a jquery object then extract th dom element
@@ -50,12 +55,12 @@ var SpookyElement = function(elOrData, parentOrData){
     this.onAppended = new Signal();
     this.onPrepended = new Signal();
 
-    if (_.isFunction(elOrData)){
+    if (isFunction(elOrData)){
         // THis must be a template
         this.template = elOrData;
-        var dom = domify( this.render(parentOrData) );
+        var dom = domify( this._render(parentOrData) );
         this.view = dom;
-    } else if (_.isString(elOrData)){
+    } else if (isString(elOrData)){
         if (elOrData.indexOf('<') === 0){
             // This is a tag
             this.view = domify(elOrData);
@@ -63,20 +68,20 @@ var SpookyElement = function(elOrData, parentOrData){
             // This is a selector
             this.select(elOrData, parentOrData);
         }
-    } else if (_.isElement(elOrData)){
+    } else if (isElement(elOrData)){
         this.view = elOrData;
     } else if (this.template){
-        this.view = domify( this.render(elOrData) );
+        this.view = domify( this._render(elOrData) );
     }
 
     // Set this to identify spooky elements
-    this.spooky = true;
-    this._spooky = true;
+    this._isSpookyElement = true;
 
 }
 
 // Inherit from Array to make SpookyElement act like a jQuery object
-inherits(SpookyElement, Array);
+//inherits(SpookyElement, Array);
+SpookyElement.prototype = Object.create(Array.prototype);
 
 mixes(SpookyElement, {
 
@@ -86,7 +91,7 @@ mixes(SpookyElement, {
             if (view === null){
                 this.length = 0;
             } else {
-                // Make it jQuery compatible, so that TweenLite can use it
+                // Make it jQuery compatible, so that gsap (TweenLite, TweenMax) can use it
                 this[0] = this._view;
                 this.length = 1;
             }
@@ -96,12 +101,8 @@ mixes(SpookyElement, {
         }
     },
 
-    // Called by spooky-router when view parameters have changed
-    paramsChanged: function(){
-    },
-
     select: function(selector, context){
-        if (context && context.spooky){ context = context.view; }
+        if (context && context._isSpookyElement){ context = context.view; }
         this.view = select(selector, context);
         return this;
     },
@@ -134,7 +135,7 @@ mixes(SpookyElement, {
         if (elements){
             for (var i = 0, len = elements.length; i < len; i += 1) {
                 var element = elements[i];
-                spookyElements.push( new SpookyElement(element) );
+                spookyElements.push( SpookyElement(element) );
             }
         }
         return spookyElements;
@@ -143,8 +144,8 @@ mixes(SpookyElement, {
     appendTo: function(elOrSelector){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         var el = elOrSelector;
-        if (_.isString(el)){ el = select(el) }
-        if (el && el.spooky){ el = el.view; }
+        if (isString(el)){ el = select(el) }
+        if (el && el._isSpookyElement){ el = el.view; }
         append(el, this.view);
         // dispatch
         this.onAppended.dispatch(this);
@@ -154,8 +155,8 @@ mixes(SpookyElement, {
     prependTo: function(elOrSelector){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         var el = elOrSelector;
-        if (_.isString(el)){ el = select(el) }
-        if (el && el.spooky){ el = el.view; }
+        if (isString(el)){ el = select(el) }
+        if (el && el._isSpookyElement){ el = el.view; }
         prepend(el, this.view);
         // dispatch
         this.onPrepended.dispatch(this);
@@ -164,7 +165,7 @@ mixes(SpookyElement, {
 
     append: function(el){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
-        if (_.isString(el)){
+        if (isString(el)){
             // This is an HTML tag or a Text node
             el = domify(el);
         }
@@ -174,7 +175,7 @@ mixes(SpookyElement, {
 
     prepend: function(el){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
-        if (_.isString(el)){
+        if (isString(el)){
             // This is an HTML tag or a Text node
             el = domify(el);
         }
@@ -182,8 +183,8 @@ mixes(SpookyElement, {
         return this;
     },
 
-    render: function(data){
-        if (this.template && _.isFunction(this.template)){
+    _render: function(data){
+        if (this.template && isFunction(this.template)){
             var templateString = this.template(data);
             var trimmedString = templateString.replace(/^\s+|\s+$/g, '');
             return trimmedString;
@@ -258,7 +259,7 @@ mixes(SpookyElement, {
      */
     html: function(html){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
-        if (!_.isUndefined(html)){
+        if (!isUndefined(html)){
             this.view.innerHTML = html;
         } else {
             return this.view.innerHTML;
@@ -287,64 +288,16 @@ mixes(SpookyElement, {
     },
 
     destroy: function(){
-        this.removeAddedSignals();
         if (this.view){ this.remove(); }
         this.view = null;
     },
 
     remove: function(){
-        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
-        remove(this.view);
-        this.view = null;
+        if (this.view) {
+	        remove(this.view);
+	    } 
+	    this.view = null;
         return this;
-    },
-
-    // Signals
-    // Add and keep track of signals for easy removal
-    addSignal: function(signal, handler, context, once){
-        if (!signal) throw new Error('Signal was not provided');
-        if (!handler) throw new Error('handler funciton was not provided');
-        if (!this._addedSignals) this._addedSignals = [];
-        if (_.isObject(context)) handler = handler.bind(context);
-        var signalObj = {
-            signal: signal,
-            handler: handler
-        };
-        // Remove just to be safe
-        this.removeSignal(signal, handler);
-        if (once === true){
-            signalObj.signal.addOnce( signalObj.handler );
-        } else {
-            signalObj.signal.add( signalObj.handler );
-        }
-        this._addedSignals.push( signalObj );
-    },
-
-    addSignalOnce: function(signal, handler, context){
-        this.addSignal(signal, handler, context, true);
-    },
-
-    removeSignal: function(signal, handler){
-        // Remove signals
-        if (this._addedSignals && this._addedSignals.length){
-            this._addedSignals.some(function(signalObj, i){
-                if (signalObj.signal == signal && signalObj.handler == handler){
-                    signalObj.signal.remove( signalObj.handler );
-                    this._addedSignals.splice(i, 1);
-                    return true;
-                }
-            }.bind(this));
-        }
-    },
-
-    removeAddedSignals: function(){
-        // Remove signals
-        if (this._addedSignals && this._addedSignals.length){
-            this._addedSignals.forEach(function(signalObj){
-                signalObj.signal.remove( signalObj.handler );
-            });
-            this._addedSignals = [];
-        }
     }
 
 });
