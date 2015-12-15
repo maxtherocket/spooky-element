@@ -70,8 +70,7 @@ ExtraSpooky.prototype = Object.create(SpookyElement.prototype);
 // Or ES6 syntax
 class ExtraSpooky extends SpookyElement {
     constructor(data){
-        this.template = require('../templates/ExtraSpooky.hbs');
-        super(data);
+        super(require('../templates/ExtraSpooky.hbs'), data);
     }
 }
 
