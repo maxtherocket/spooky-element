@@ -21,7 +21,7 @@
   "dependencies": {
     "atts": "^0.3.0",
     "dom-css": "^2.0.0",
-    "dom-event": "^2.0.0",
+    "dom-events": "~0.1.1",
     "dom-select": "^1.1.0",
     "domify": "^1.4.0",
     "element-class": "^0.2.0",

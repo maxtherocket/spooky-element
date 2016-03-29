@@ -1,8 +1,9 @@
 var select = require('dom-select');
 var style = require('dom-css');
 var domify = require('domify');
-var on = require('dom-event');
+var on = require('dom-events');
 var off = on.off;
+var once = on.once;
 var append = require('insert').append;
 var prepend = require('insert').prepend;
 var remove = require('insert').remove;
@@ -201,6 +202,12 @@ mixes(SpookyElement, {
     off: function(event, handler){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
         off(this.view, event, handler);
+        return this;
+    },
+
+    once: function(event, handler){
+        if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
+        once(this.view, event, handler);
         return this;
     },
 
