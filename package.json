@@ -29,7 +29,8 @@
     "is-function": "^1.0.1",
     "is-string": "^1.0.4",
     "mixes": "~1.0.4",
-    "queried": "^1.4.5"
+    "queried": "^1.4.5",
+    "signals": "^1.0.0"
   },
   "devDependencies": {
     "babel": "^6.3.13",
