@@ -22,14 +22,14 @@
     "atts": "^0.3.0",
     "dom-css": "^2.0.0",
     "dom-events": "~0.1.1",
-    "dom-select": "^1.1.0",
     "domify": "^1.4.0",
     "element-class": "^0.2.0",
     "insert": "~1.0.1",
     "is-element": "^0.1.0",
     "is-function": "^1.0.1",
     "is-string": "^1.0.4",
-    "mixes": "~1.0.4"
+    "mixes": "~1.0.4",
+    "queried": "^1.4.5"
   },
   "devDependencies": {
     "babel": "^6.3.13",
@@ -38,7 +38,7 @@
     "domready": "~1.0.7",
     "gsap": "^1.18.0",
     "handlebars": "^4.0.5",
-    "hbsfy": "^2.4.1",
+    "hbsfy": "^2.5.1",
     "jquery": "~2.1.1",
     "signals": "~1.0.0",
     "uglifyify": "^3.0.1",

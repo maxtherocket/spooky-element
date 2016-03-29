@@ -50,7 +50,7 @@ domready(function(){
 
     var spookyJQueryParent = new SpookyEl( $('#spooky-append'), $('body') ).css({background:'#0000ff'});
 
-    var spooky = new SpookyElement( '<div class="boo">BOO!</div>' );
+    var spooky = new SpookyElement( '<div class="boo">BOO! click me</div>' );
     spooky.css({
         fontSize: '40px',
         fontWeight: 'bold',
@@ -64,6 +64,16 @@ domready(function(){
     })
     .on('mouseup', function(){
         spooky.css('color', 'red');
+    });
+
+    // Test events
+    var dummyHandler = function(){
+    	console.log("This should not log out!!!!");
+    }
+    spooky.on('click', dummyHandler);
+    spooky.off('click', dummyHandler);
+    spooky.once('click', (e) => {
+      console.log("THis should work only once!");
     });
 
     spooky.attr('width', '400px');
