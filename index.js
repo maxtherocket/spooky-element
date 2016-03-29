@@ -14,9 +14,7 @@ var elementClass = require('element-class');
 
 var NO_VIEW_ERROR_MSG = 'The view is not defined in this SpookyElement';
 
-var isUndefined = function(myVar){
-	return (typeof myVar != 'undefined');
-}
+var isUndefined = require('is-undefined');
 var isString = require('is-string');
 var isFunction = require('is-function');
 var isElement = require('is-element');
