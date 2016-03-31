@@ -293,6 +293,7 @@ mixes(SpookyElement, {
     },
 
     destroy: function(){
+    	this.removeAddedSignals();
         if (this.view){ this.remove(); }
         this.view = null;
     },
@@ -303,6 +304,54 @@ mixes(SpookyElement, {
 	    } 
 	    this.view = null;
         return this;
+    },
+
+    // Signals
+    // Add and keep track of signals for easy removal
+    addSignal: function(signal, handler, context, once){
+        if (!signal) throw new Error('Signal was not provided');
+        if (!handler) throw new Error('handler funciton was not provided');
+        if (!this._addedSignals) this._addedSignals = [];
+        if (_.isObject(context)) handler = handler.bind(context);
+        var signalObj = {
+            signal: signal,
+            handler: handler
+        };
+        // Remove just to be safe
+        this.removeSignal(signal, handler);
+        if (once === true){
+            signalObj.signal.addOnce( signalObj.handler );
+        } else {
+            signalObj.signal.add( signalObj.handler );
+        }
+        this._addedSignals.push( signalObj );
+    },
+
+    addSignalOnce: function(signal, handler, context){
+        this.addSignal(signal, handler, context, true);
+    },
+
+    removeSignal: function(signal, handler){
+        // Remove signals
+        if (this._addedSignals && this._addedSignals.length){
+            this._addedSignals.some(function(signalObj, i){
+                if (signalObj.signal == signal && signalObj.handler == handler){
+                    signalObj.signal.remove( signalObj.handler );
+                    this._addedSignals.splice(i, 1);
+                    return true;
+                }
+            }.bind(this));
+        }
+    },
+
+    removeAddedSignals: function(){
+        // Remove signals
+        if (this._addedSignals && this._addedSignals.length){
+            this._addedSignals.forEach(function(signalObj){
+                signalObj.signal.remove( signalObj.handler );
+            });
+            this._addedSignals = [];
+        }
     }
 
 });
