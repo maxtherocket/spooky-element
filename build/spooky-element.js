@@ -1,6 +1,205 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.SpookyEl = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var select=require("dom-select"),style=require("dom-css"),domify=require("domify"),on=require("dom-event"),off=on.off,append=require("insert").append,prepend=require("insert").prepend,remove=require("insert").remove,mixes=require("mixes"),Signal=require("signals").Signal,atts=require("atts"),elementClass=require("element-class"),NO_VIEW_ERROR_MSG="The view is not defined in this SpookyElement",isUndefined=function(e){return"undefined"!=typeof e},isString=require("is-string"),isFunction=require("is-function"),isElement=require("is-element"),SpookyElement=function(e,i){if(!(this instanceof SpookyElement))return new SpookyElement(e,i);if(e){if(e._isSpookyElement)return e;if(e.jquery){if(!e.length)return this;e=e[0]}}if(i&&i.jquery&&(i=i.length?i[0]:null),this._view=null,this.onAppended=new Signal,this.onPrepended=new Signal,isFunction(e)){this.template=e;var t=domify(this.render(i));this.view=t}else isString(e)?0===e.indexOf("<")?this.view=domify(e):this.select(e,i):isElement(e)?this.view=e:this.template&&(this.view=domify(this.render(e)));this._isSpookyElement=!0};SpookyElement.prototype=Object.create(Array.prototype),mixes(SpookyElement,{view:{set:function(e){this._view=e,null===e?this.length=0:(this[0]=this._view,this.length=1)},get:function(){return this._view}},select:function(e,i){return i&&i._isSpookyElement&&(i=i.view),this.view=select(e,i),this},getElement:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return e?select(e,this.view):this.view},findElement:function(e){return this.getElement(e)},find:function(e){var i=this.getElement(e);return i?new SpookyElement(i):null},findAll:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);var i=select.all(e,this.view),t=[];if(i)for(var n=0,r=i.length;r>n;n+=1){var s=i[n];t.push(SpookyElement(s))}return t},appendTo:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);var i=e;return isString(i)&&(i=select(i)),i&&i._isSpookyElement&&(i=i.view),append(i,this.view),this.onAppended.dispatch(this),this},prependTo:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);var i=e;return isString(i)&&(i=select(i)),i&&i._isSpookyElement&&(i=i.view),prepend(i,this.view),this.onPrepended.dispatch(this),this},append:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return isString(e)&&(e=domify(e)),append(this.view,e),this},prepend:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return isString(e)&&(e=domify(e)),prepend(this.view,e),this},render:function(e){if(this.template&&isFunction(this.template)){var i=this.template(e),t=i.replace(/^\s+|\s+$/g,"");return t}return this},on:function(e,i){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return on(this.view,e,i),this},off:function(e,i){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return off(this.view,e,i),this},css:function(e,i){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return i?style(this.view,e,i):style(this.view,e),this},attr:function(e,i){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return 2==arguments.length?(atts.attr(this.view,e,i),this):1==arguments.length?atts.attr(this.view,e):this},addClass:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return elementClass(this.view).add(e),this},removeClass:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return elementClass(this.view).remove(e),this},hasClass:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return elementClass(this.view).has(e)},getWidth:function(){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return this.view.offsetWidth},getHeight:function(){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return this.view.offsetHeight},html:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return isUndefined(e)?this.view.innerHTML:(this.view.innerHTML=e,this)},animateIn:function(e,i){return i&&i(),this},animateOut:function(e,i){return i&&i(),this},resize:function(e,i){return this.width=e,this.height=i,this.css({width:e,height:i}),this},destroy:function(){this.view&&this.remove(),this.view=null},remove:function(){return this.view&&remove(this.view),this.view=null,this}}),module.exports=SpookyElement;
-},{"atts":2,"dom-css":3,"dom-event":9,"dom-select":10,"domify":11,"element-class":12,"insert":16,"is-element":22,"is-function":23,"is-string":24,"mixes":25,"signals":27}],2:[function(require,module,exports){
+var select=require("queried"),style=require("dom-css"),domify=require("domify"),on=require("dom-events").on,off=require("dom-events").off,once=require("dom-events").once,append=require("insert").append,prepend=require("insert").prepend,remove=require("insert").remove,mixes=require("mixes"),Signal=require("signals").Signal,atts=require("atts"),elementClass=require("element-class"),NO_VIEW_ERROR_MSG="The view is not defined in this SpookyElement",isUndefined=require("is-undefined"),isString=require("is-string"),isFunction=require("is-function"),isElement=require("is-element"),isObject=require("is-object"),SpookyElement=function(e,i){if(!(this instanceof SpookyElement))return new SpookyElement(e,i);if(e){if(e._isSpookyElement)return e;if(e.jquery){if(!e.length)return this;e=e[0]}}if(i&&i.jquery&&(i=i.length?i[0]:null),this._view=null,this.onAppended=new Signal,this.onPrepended=new Signal,isFunction(e)){this.template=e;var t=domify(this._render(i));this.view=t}else isString(e)?0===e.indexOf("<")?this.view=domify(e):this.select(e,i):isElement(e)?this.view=e:this.template&&(this.view=domify(this._render(e)));this._isSpookyElement=!0};SpookyElement.prototype=Object.create(Array.prototype),mixes(SpookyElement,{view:{set:function(e){this._view=e,null===e?this.length=0:(this[0]=this._view,this.length=1)},get:function(){return this._view}},select:function(e,i){return i&&i._isSpookyElement&&(i=i.view),this.view=select(e,i),this},getElement:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return e?select(e,this.view):this.view},findElement:function(e){return this.getElement(e)},find:function(e){var i=this.getElement(e);return i?new SpookyElement(i):null},findAll:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);var i=select.all(e,this.view),t=[];if(i)for(var n=0,r=i.length;n<r;n+=1){var s=i[n];t.push(SpookyElement(s))}return t},appendTo:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);var i=e;return isString(i)&&(i=select(i)),i&&i._isSpookyElement&&(i=i.view),append(i,this.view),this.onAppended.dispatch(this),this},prependTo:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);var i=e;return isString(i)&&(i=select(i)),i&&i._isSpookyElement&&(i=i.view),prepend(i,this.view),this.onPrepended.dispatch(this),this},append:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return isString(e)&&(e=domify(e)),append(this.view,e),this},prepend:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return isString(e)&&(e=domify(e)),prepend(this.view,e),this},_render:function(e){if(this.template&&isFunction(this.template)){return this.template(e).replace(/^\s+|\s+$/g,"")}return this},on:function(e,i){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return on(this.view,e,i),this},off:function(e,i){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return off(this.view,e,i),this},once:function(e,i){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return once(this.view,e,i),this},css:function(e,i){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return i?style(this.view,e,i):style(this.view,e),this},attr:function(e,i){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return 2==arguments.length?(atts.attr(this.view,e,i),this):1==arguments.length?atts.attr(this.view,e):this},addClass:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return elementClass(this.view).add(e),this},removeClass:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return elementClass(this.view).remove(e),this},hasClass:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return elementClass(this.view).has(e)},getWidth:function(){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return this.view.offsetWidth},getHeight:function(){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return this.view.offsetHeight},html:function(e){if(!this.view)throw new Error(NO_VIEW_ERROR_MSG);return isUndefined(e)?this.view.innerHTML:(this.view.innerHTML=e,this)},animateIn:function(e,i){return i&&i(),this},animateOut:function(e,i){return i&&i(),this},resize:function(e,i){return this.width=e,this.height=i,this.css({width:e,height:i}),this},destroy:function(){this.removeAddedSignals(),this.view&&this.remove(),this.view=null},remove:function(){return this.view&&remove(this.view),this.view=null,this},addSignal:function(e,i,t,n){if(!e)throw new Error("Signal was not provided");if(!i)throw new Error("handler funciton was not provided");this._addedSignals||(this._addedSignals=[]),isObject(t)&&(i=i.bind(t));var r={signal:e,handler:i};this.removeSignal(e,i),n===!0?r.signal.addOnce(r.handler):r.signal.add(r.handler),this._addedSignals.push(r)},addSignalOnce:function(e,i,t){this.addSignal(e,i,t,!0)},removeSignal:function(e,i){this._addedSignals&&this._addedSignals.length&&this._addedSignals.some(function(t,n){if(t.signal==e&&t.handler==i)return t.signal.remove(t.handler),this._addedSignals.splice(n,1),!0}.bind(this))},removeAddedSignals:function(){this._addedSignals&&this._addedSignals.length&&(this._addedSignals.forEach(function(e){e.signal.remove(e.handler)}),this._addedSignals=[])}}),module.exports=SpookyElement;
+},{"atts":6,"dom-css":7,"dom-events":8,"domify":9,"element-class":10,"insert":17,"is-element":22,"is-function":23,"is-object":24,"is-string":25,"is-undefined":26,"mixes":27,"queried":36,"signals":43}],2:[function(require,module,exports){
+/* The following list is defined in React's core */
+var IS_UNITLESS = {
+  animationIterationCount: true,
+  boxFlex: true,
+  boxFlexGroup: true,
+  boxOrdinalGroup: true,
+  columnCount: true,
+  flex: true,
+  flexGrow: true,
+  flexPositive: true,
+  flexShrink: true,
+  flexNegative: true,
+  flexOrder: true,
+  gridRow: true,
+  gridColumn: true,
+  fontWeight: true,
+  lineClamp: true,
+  lineHeight: true,
+  opacity: true,
+  order: true,
+  orphans: true,
+  tabSize: true,
+  widows: true,
+  zIndex: true,
+  zoom: true,
+
+  // SVG-related properties
+  fillOpacity: true,
+  stopOpacity: true,
+  strokeDashoffset: true,
+  strokeOpacity: true,
+  strokeWidth: true
+};
+
+module.exports = function(name, value) {
+  if(typeof value === 'number' && !IS_UNITLESS[ name ]) {
+    return value + 'px';
+  } else {
+    return value;
+  }
+};
+},{}],3:[function(require,module,exports){
+'use strict'
+
+/**
+ * Expose `arrayFlatten`.
+ */
+module.exports = flatten
+module.exports.from = flattenFrom
+module.exports.depth = flattenDepth
+module.exports.fromDepth = flattenFromDepth
+
+/**
+ * Flatten an array.
+ *
+ * @param  {Array} array
+ * @return {Array}
+ */
+function flatten (array) {
+  if (!Array.isArray(array)) {
+    throw new TypeError('Expected value to be an array')
+  }
+
+  return flattenFrom(array)
+}
+
+/**
+ * Flatten an array-like structure.
+ *
+ * @param  {Array} array
+ * @return {Array}
+ */
+function flattenFrom (array) {
+  return flattenDown(array, [])
+}
+
+/**
+ * Flatten an array-like structure with depth.
+ *
+ * @param  {Array}  array
+ * @param  {number} depth
+ * @return {Array}
+ */
+function flattenDepth (array, depth) {
+  if (!Array.isArray(array)) {
+    throw new TypeError('Expected value to be an array')
+  }
+
+  return flattenFromDepth(array, depth)
+}
+
+/**
+ * Flatten an array-like structure with depth.
+ *
+ * @param  {Array}  array
+ * @param  {number} depth
+ * @return {Array}
+ */
+function flattenFromDepth (array, depth) {
+  if (typeof depth !== 'number') {
+    throw new TypeError('Expected the depth to be a number')
+  }
+
+  return flattenDownDepth(array, [], depth)
+}
+
+/**
+ * Flatten an array indefinitely.
+ *
+ * @param  {Array} array
+ * @param  {Array} result
+ * @return {Array}
+ */
+function flattenDown (array, result) {
+  for (var i = 0; i < array.length; i++) {
+    var value = array[i]
+
+    if (Array.isArray(value)) {
+      flattenDown(value, result)
+    } else {
+      result.push(value)
+    }
+  }
+
+  return result
+}
+
+/**
+ * Flatten an array with depth.
+ *
+ * @param  {Array}  array
+ * @param  {Array}  result
+ * @param  {number} depth
+ * @return {Array}
+ */
+function flattenDownDepth (array, result, depth) {
+  depth--
+
+  for (var i = 0; i < array.length; i++) {
+    var value = array[i]
+
+    if (depth > -1 && Array.isArray(value)) {
+      flattenDownDepth(value, result, depth)
+    } else {
+      result.push(value)
+    }
+  }
+
+  return result
+}
+
+},{}],4:[function(require,module,exports){
+/*!
+ * array-unique <https://github.com/jonschlinkert/array-unique>
+ *
+ * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Licensed under the MIT license.
+ */
+
+'use strict';
+
+module.exports = function unique(arr) {
+  if (!Array.isArray(arr)) {
+    throw new TypeError('array-unique expects an array.');
+  }
+
+  var len = arr.length;
+  var i = -1;
+
+  while (i++ < len) {
+    var j = i + 1;
+
+    for (; j < arr.length; ++j) {
+      if (arr[i] === arr[j]) {
+        arr.splice(j--, 1);
+      }
+    }
+  }
+  return arr;
+};
+
+},{}],5:[function(require,module,exports){
+/*!
+ * arrayify-compact <https://github.com/jonschlinkert/arrayify-compact>
+ *
+ * Copyright (c) 2014 Jon Schlinkert, contributors.
+ * Licensed under the MIT License
+ */
+
+'use strict';
+
+var flatten = require('array-flatten');
+
+module.exports = function(arr) {
+  return flatten(!Array.isArray(arr) ? [arr] : arr)
+    .filter(Boolean);
+};
+
+},{"array-flatten":3}],6:[function(require,module,exports){
 /*!
  * atts 0.3.0+201503012137
  * https://github.com/ryanve/atts
@@ -190,7 +389,7 @@ var select=require("dom-select"),style=require("dom-css"),domify=require("domify
 
   return api;
 });
-},{}],3:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var prefix = require('prefix-style')
 var toCamelCase = require('to-camel-case')
 var cache = { 'float': 'cssFloat' }
@@ -229,7 +428,11 @@ function detect (cssProp) {
 
 function set () {
   if (arguments.length === 2) {
-    each(arguments[0], arguments[1])
+    if (typeof arguments[1] === 'string') {
+      arguments[0].style.cssText = arguments[1]
+    } else {
+      each(arguments[0], arguments[1])
+    }
   } else {
     style(arguments[0], arguments[1], arguments[2])
   }
@@ -249,238 +452,58 @@ module.exports.get = function (element, properties) {
   }
 }
 
-},{"add-px-to-style":4,"prefix-style":5,"to-camel-case":6}],4:[function(require,module,exports){
-/* The following list is defined in React's core */
-var IS_UNITLESS = {
-  animationIterationCount: true,
-  boxFlex: true,
-  boxFlexGroup: true,
-  boxOrdinalGroup: true,
-  columnCount: true,
-  flex: true,
-  flexGrow: true,
-  flexPositive: true,
-  flexShrink: true,
-  flexNegative: true,
-  flexOrder: true,
-  gridRow: true,
-  gridColumn: true,
-  fontWeight: true,
-  lineClamp: true,
-  lineHeight: true,
-  opacity: true,
-  order: true,
-  orphans: true,
-  tabSize: true,
-  widows: true,
-  zIndex: true,
-  zoom: true,
+},{"add-px-to-style":2,"prefix-style":35,"to-camel-case":50}],8:[function(require,module,exports){
 
-  // SVG-related properties
-  fillOpacity: true,
-  stopOpacity: true,
-  strokeDashoffset: true,
-  strokeOpacity: true,
-  strokeWidth: true
+var synth = require('synthetic-dom-events');
+
+var on = function(element, name, fn, capture) {
+    return element.addEventListener(name, fn, capture || false);
 };
 
-module.exports = function(name, value) {
-  if(typeof value === 'number' && !IS_UNITLESS[ name ]) {
-    return value + 'px';
-  } else {
-    return value;
-  }
+var off = function(element, name, fn, capture) {
+    return element.removeEventListener(name, fn, capture || false);
 };
-},{}],5:[function(require,module,exports){
-var div = null
-var prefixes = [ 'Webkit', 'Moz', 'O', 'ms' ]
 
-module.exports = function prefixStyle (prop) {
-  // re-use a dummy div
-  if (!div) {
-    div = document.createElement('div')
-  }
-
-  var style = div.style
-
-  // prop exists without prefix
-  if (prop in style) {
-    return prop
-  }
-
-  // borderRadius -> BorderRadius
-  var titleCase = prop.charAt(0).toUpperCase() + prop.slice(1)
-
-  // find the vendor-prefixed prop
-  for (var i = prefixes.length; i >= 0; i--) {
-    var name = prefixes[i] + titleCase
-    // e.g. WebkitBorderRadius or webkitBorderRadius
-    if (name in style) {
-      return name
+var once = function (element, name, fn, capture) {
+    function tmp (ev) {
+        off(element, name, tmp, capture);
+        fn(ev);
     }
-  }
+    on(element, name, tmp, capture);
+};
 
-  return false
+var emit = function(element, name, opt) {
+    var ev = synth(name, opt);
+    element.dispatchEvent(ev);
+};
+
+if (!document.addEventListener) {
+    on = function(element, name, fn) {
+        return element.attachEvent('on' + name, fn);
+    };
 }
 
-},{}],6:[function(require,module,exports){
-
-var toSpace = require('to-space-case');
-
-
-/**
- * Expose `toCamelCase`.
- */
-
-module.exports = toCamelCase;
-
-
-/**
- * Convert a `string` to camel case.
- *
- * @param {String} string
- * @return {String}
- */
-
-
-function toCamelCase (string) {
-  return toSpace(string).replace(/\s(\w)/g, function (matches, letter) {
-    return letter.toUpperCase();
-  });
-}
-},{"to-space-case":7}],7:[function(require,module,exports){
-
-var clean = require('to-no-case');
-
-
-/**
- * Expose `toSpaceCase`.
- */
-
-module.exports = toSpaceCase;
-
-
-/**
- * Convert a `string` to space case.
- *
- * @param {String} string
- * @return {String}
- */
-
-
-function toSpaceCase (string) {
-  return clean(string).replace(/[\W_]+(.|$)/g, function (matches, match) {
-    return match ? ' ' + match : '';
-  });
-}
-},{"to-no-case":8}],8:[function(require,module,exports){
-
-/**
- * Expose `toNoCase`.
- */
-
-module.exports = toNoCase;
-
-
-/**
- * Test whether a string is camel-case.
- */
-
-var hasSpace = /\s/;
-var hasCamel = /[a-z][A-Z]/;
-var hasSeparator = /[\W_]/;
-
-
-/**
- * Remove any starting case from a `string`, like camel or snake, but keep
- * spaces and punctuation that may be important otherwise.
- *
- * @param {String} string
- * @return {String}
- */
-
-function toNoCase (string) {
-  if (hasSpace.test(string)) return string.toLowerCase();
-
-  if (hasSeparator.test(string)) string = unseparate(string);
-  if (hasCamel.test(string)) string = uncamelize(string);
-  return string.toLowerCase();
+if (!document.removeEventListener) {
+    off = function(element, name, fn) {
+        return element.detachEvent('on' + name, fn);
+    };
 }
 
-
-/**
- * Separator splitter.
- */
-
-var separatorSplitter = /[\W_]+(.|$)/g;
-
-
-/**
- * Un-separate a `string`.
- *
- * @param {String} string
- * @return {String}
- */
-
-function unseparate (string) {
-  return string.replace(separatorSplitter, function (m, next) {
-    return next ? ' ' + next : '';
-  });
+if (!document.dispatchEvent) {
+    emit = function(element, name, opt) {
+        var ev = synth(name, opt);
+        return element.fireEvent('on' + ev.type, ev);
+    };
 }
 
+module.exports = {
+    on: on,
+    off: off,
+    once: once,
+    emit: emit
+};
 
-/**
- * Camelcase splitter.
- */
-
-var camelSplitter = /(.)([A-Z]+)/g;
-
-
-/**
- * Un-camelcase a `string`.
- *
- * @param {String} string
- * @return {String}
- */
-
-function uncamelize (string) {
-  return string.replace(camelSplitter, function (m, previous, uppers) {
-    return previous + ' ' + uppers.toLowerCase().split('').join(' ');
-  });
-}
-},{}],9:[function(require,module,exports){
-module.exports = on;
-module.exports.on = on;
-module.exports.off = off;
-
-function on (element, event, callback, capture) {
-  !element.addEventListener && (event = 'on' + event);
-  (element.addEventListener || element.attachEvent).call(element, event, callback, capture);
-  return callback;
-}
-
-function off (element, event, callback, capture) {
-  !element.removeEventListener && (event = 'on' + event);
-  (element.removeEventListener || element.detachEvent).call(element, event, callback, capture);
-  return callback;
-}
-
-},{}],10:[function(require,module,exports){
-module.exports = one;
-module.exports.all = all;
-
-function one (selector, parent) {
-  parent || (parent = document);
-  return parent.querySelector(selector);
-}
-
-function all (selector, parent) {
-  parent || (parent = document);
-  var selection = parent.querySelectorAll(selector);
-  return  Array.prototype.slice.call(selection);
-}
-
-},{}],11:[function(require,module,exports){
+},{"synthetic-dom-events":46}],9:[function(require,module,exports){
 
 /**
  * Expose `parse`.
@@ -594,7 +617,7 @@ function parse(html, doc) {
   return fragment;
 }
 
-},{}],12:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = function(opts) {
   return new ElementClass(opts)
 }
@@ -655,7 +678,30 @@ ElementClass.prototype.toggle = function(className) {
   else this.add(className)
 }
 
+},{}],11:[function(require,module,exports){
+/**
+ * @module  get-doc
+ */
+
+var hasDom = require('has-dom');
+
+module.exports = hasDom() ? document : null;
+},{"has-dom":13}],12:[function(require,module,exports){
+/** generate unique id for selector */
+var counter = Date.now() % 1e9;
+
+module.exports = function getUid(){
+	return (Math.random() * 1e9 >>> 0) + (counter++);
+};
 },{}],13:[function(require,module,exports){
+'use strict';
+module.exports = function () {
+	return typeof window !== 'undefined'
+		&& typeof document !== 'undefined'
+		&& typeof document.createElement === 'function';
+};
+
+},{}],14:[function(require,module,exports){
 var toArray = require("to-array")
 
     , mutation = require("./mutation")
@@ -671,7 +717,7 @@ function after(sibling, first) {
     return first
 }
 
-},{"./mutation":17,"to-array":18}],14:[function(require,module,exports){
+},{"./mutation":18,"to-array":49}],15:[function(require,module,exports){
 var toArray = require("to-array")
 
     , mutation = require("./mutation")
@@ -684,7 +730,7 @@ function append(parent, first) {
     return first
 }
 
-},{"./mutation":17,"to-array":18}],15:[function(require,module,exports){
+},{"./mutation":18,"to-array":49}],16:[function(require,module,exports){
 var toArray = require("to-array")
 
     , mutation = require("./mutation")
@@ -699,7 +745,7 @@ function before(sibling, first) {
     return first
 }
 
-},{"./mutation":17,"to-array":18}],16:[function(require,module,exports){
+},{"./mutation":18,"to-array":49}],17:[function(require,module,exports){
 var mutation = require("./mutation")
     , prepend = require("./prepend")
     , append = require("./append")
@@ -718,7 +764,7 @@ module.exports = {
     , mutation: mutation
 }
 
-},{"./after":13,"./append":14,"./before":15,"./mutation":17,"./prepend":19,"./remove":20,"./replace":21}],17:[function(require,module,exports){
+},{"./after":14,"./append":15,"./before":16,"./mutation":18,"./prepend":19,"./remove":20,"./replace":21}],18:[function(require,module,exports){
 module.exports = mutation
 
 function mutation(list) {
@@ -747,21 +793,6 @@ function appendToFragment(elem) {
     this.appendChild(elem)
 }
 
-},{}],18:[function(require,module,exports){
-module.exports = toArray
-
-function toArray(list, index) {
-    var array = []
-
-    index = index || 0
-
-    for (var i = index || 0; i < list.length; i++) {
-        array[i - index] = list[i]
-    }
-
-    return array
-}
-
 },{}],19:[function(require,module,exports){
 var toArray = require("to-array")
 
@@ -775,7 +806,7 @@ function prepend(parent, first) {
     return first
 }
 
-},{"./mutation":17,"to-array":18}],20:[function(require,module,exports){
+},{"./mutation":18,"to-array":49}],20:[function(require,module,exports){
 var toArray = require("to-array")
 
     , mutation = require("./mutation")
@@ -803,7 +834,7 @@ function removeFromParent(elem) {
     elem.parentNode.removeChild(elem)
 }
 
-},{"./mutation":17,"to-array":18}],21:[function(require,module,exports){
+},{"./mutation":18,"to-array":49}],21:[function(require,module,exports){
 var toArray = require("to-array")
     , mutation = require("./mutation")
 
@@ -817,7 +848,7 @@ function replace(target, first) {
     return first
 }
 
-},{"./mutation":17,"to-array":18}],22:[function(require,module,exports){
+},{"./mutation":18,"to-array":49}],22:[function(require,module,exports){
 (function(root) {
   function isElement(value) {
     return (value && value.nodeType === 1) &&
@@ -858,6 +889,13 @@ function isFunction (fn) {
 };
 
 },{}],24:[function(require,module,exports){
+"use strict";
+
+module.exports = function isObject(x) {
+	return typeof x === "object" && x !== null;
+};
+
+},{}],25:[function(require,module,exports){
 'use strict';
 
 var strValue = String.prototype.valueOf;
@@ -879,7 +917,24 @@ module.exports = function isString(value) {
 	return hasToStringTag ? tryStringObject(value) : toStr.call(value) === strClass;
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
+"use strict";
+
+/**
+ * isUndefined
+ * Checks if a value is undefined or not.
+ *
+ * @name isUndefined
+ * @function
+ * @param {Anything} input The input value.
+ * @returns {Boolean} `true`, if the input is `undefined`, `false` otherwise.
+ */
+
+var u = void 0;
+module.exports = function (input) {
+  return input === u;
+};
+},{}],27:[function(require,module,exports){
 var xtend = require('xtend')
 
 var defaults = {
@@ -906,28 +961,471 @@ module.exports = function mixes(ctor, entries) {
 }
 
 module.exports.mix = mix
-},{"xtend":26}],26:[function(require,module,exports){
-module.exports = extend
+},{"xtend":53}],28:[function(require,module,exports){
+var isString = require('./is-string');
+var isArray = require('./is-array');
+var isFn = require('./is-fn');
 
-var hasOwnProperty = Object.prototype.hasOwnProperty;
+//FIXME: add tests from http://jsfiddle.net/ku9LS/1/
+module.exports = function (a){
+	return isArray(a) || (a && !isString(a) && !a.nodeType && (typeof window != 'undefined' ? a != window : true) && !isFn(a) && typeof a.length === 'number');
+}
+},{"./is-array":29,"./is-fn":30,"./is-string":31}],29:[function(require,module,exports){
+module.exports = function(a){
+	return a instanceof Array;
+}
+},{}],30:[function(require,module,exports){
+module.exports = function(a){
+	return !!(a && a.apply);
+}
+},{}],31:[function(require,module,exports){
+module.exports = function(a){
+	return typeof a === 'string' || a instanceof String;
+}
+},{}],32:[function(require,module,exports){
+/**
+ * @module parenthesis
+ */
 
-function extend() {
-    var target = {}
+var parse = require('./parse');
+var stringify = require('./stringify');
+parse.parse = parse;
+parse.stringify = stringify;
 
-    for (var i = 0; i < arguments.length; i++) {
-        var source = arguments[i]
+module.exports = parse;
+},{"./parse":33,"./stringify":34}],33:[function(require,module,exports){
+/**
+ * @module  parenthesis/parse
+ *
+ * Parse a string with parenthesis.
+ *
+ * @param {string} str A string with parenthesis
+ *
+ * @return {Array} A list with parsed parens, where 0 is initial string.
+ */
 
-        for (var key in source) {
-            if (hasOwnProperty.call(source, key)) {
-                target[key] = source[key]
-            }
-        }
+//TODO: implement sequential parser of this algorithm, compare performance.
+module.exports = function(str, bracket){
+	//pretend non-string parsed per-se
+	if (typeof str !== 'string') return [str];
+
+	var res = [], prevStr;
+
+	bracket = bracket || '()';
+
+	//create parenthesis regex
+	var pRE = new RegExp(['\\', bracket[0], '[^\\', bracket[0], '\\', bracket[1], ']*\\', bracket[1]].join(''));
+
+	function replaceToken(token, idx, str){
+		//save token to res
+		var refId = res.push(token.slice(1,-1));
+
+		return '\\' + refId;
+	}
+
+	//replace paren tokens till there’s none
+	while (str != prevStr) {
+		prevStr = str;
+		str = str.replace(pRE, replaceToken);
+	}
+
+	//save resulting str
+	res.unshift(str);
+
+	return res;
+};
+},{}],34:[function(require,module,exports){
+/**
+ * @module parenthesis/stringify
+ *
+ * Stringify an array/object with parenthesis references
+ *
+ * @param {Array|Object} arr An array or object where 0 is initial string
+ *                           and every other key/value is reference id/value to replace
+ *
+ * @return {string} A string with inserted regex references
+ */
+
+//FIXME: circular references cause recursions here
+//TODO: there’s possible a recursive version of this algorithm, so test it & compare
+module.exports = function (str, refs, bracket){
+	var prevStr;
+
+	//pretend bad string stringified with no parentheses
+	if (!str) return '';
+
+	if (typeof str !== 'string') {
+		bracket = refs;
+		refs = str;
+		str = refs[0];
+	}
+
+	bracket = bracket || '()';
+
+	function replaceRef(token, idx, str){
+		return bracket[0] + refs[token.slice(1)] + bracket[1];
+	}
+
+	while (str != prevStr) {
+		prevStr = str;
+		str = str.replace(/\\[0-9]+/, replaceRef);
+	}
+
+	return str;
+};
+},{}],35:[function(require,module,exports){
+var div = null
+var prefixes = [ 'Webkit', 'Moz', 'O', 'ms' ]
+
+module.exports = function prefixStyle (prop) {
+  // re-use a dummy div
+  if (!div) {
+    div = document.createElement('div')
+  }
+
+  var style = div.style
+
+  // prop exists without prefix
+  if (prop in style) {
+    return prop
+  }
+
+  // borderRadius -> BorderRadius
+  var titleCase = prop.charAt(0).toUpperCase() + prop.slice(1)
+
+  // find the vendor-prefixed prop
+  for (var i = prefixes.length; i >= 0; i--) {
+    var name = prefixes[i] + titleCase
+    // e.g. WebkitBorderRadius or webkitBorderRadius
+    if (name in style) {
+      return name
     }
+  }
 
-    return target
+  return false
 }
 
-},{}],27:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
+/**
+ * @module  queried
+ */
+
+
+var doc = require('get-doc');
+var q = require('./lib/');
+
+
+/**
+ * Detect unsupported css4 features, polyfill them
+ */
+
+//detect `:scope`
+try {
+	doc.querySelector(':scope');
+}
+catch (e) {
+	q.registerFilter('scope', require('./lib/pseudos/scope'));
+}
+
+
+//detect `:has`
+try {
+	doc.querySelector(':has');
+}
+catch (e) {
+	q.registerFilter('has', require('./lib/pseudos/has'));
+
+	//polyfilled :has requires artificial :not to make `:not(:has(...))`.
+	q.registerFilter('not', require('./lib/pseudos/not'));
+}
+
+
+//detect `:root`
+try {
+	doc.querySelector(':root');
+}
+catch (e) {
+	q.registerFilter('root', require('./lib/pseudos/root'));
+}
+
+
+//detect `:matches`
+try {
+	doc.querySelector(':matches');
+}
+catch (e) {
+	q.registerFilter('matches', require('./lib/pseudos/matches'));
+}
+
+
+/** Helper methods */
+q.matches = require('./lib/pseudos/matches');
+
+
+module.exports = q;
+},{"./lib/":37,"./lib/pseudos/has":38,"./lib/pseudos/matches":39,"./lib/pseudos/not":40,"./lib/pseudos/root":41,"./lib/pseudos/scope":42,"get-doc":11}],37:[function(require,module,exports){
+/**
+ * @module queried/lib/index
+ */
+
+
+var slice = require('sliced');
+var unique = require('array-unique');
+var getUid = require('get-uid');
+var paren = require('parenthesis');
+var isString = require('mutype/is-string');
+var isArray = require('mutype/is-array');
+var isArrayLike = require('mutype/is-array-like');
+var arrayify = require('arrayify-compact');
+var doc = require('get-doc');
+
+
+/**
+ * Query wrapper - main method to query elements.
+ */
+function queryMultiple(selector, el) {
+	//ignore bad selector
+	if (!selector) return [];
+
+	//return elements passed as a selector unchanged (cover params case)
+	if (!isString(selector)) {
+		if (isArray(selector)) {
+			return unique(arrayify(selector.map(function (sel) {
+				return queryMultiple(sel, el);
+			})));
+		} else {
+			return [selector];
+		}
+	}
+
+	//catch polyfillable first `:scope` selector - just erase it, works just fine
+	if (pseudos.scope) {
+		selector = selector.replace(/^\s*:scope/, '');
+	}
+
+	//ignore non-queryable containers
+	if (!el) {
+		el = [querySingle.document];
+	}
+
+	//treat passed list
+	else if (isArrayLike(el)) {
+		el = arrayify(el);
+	}
+
+	//if element isn’t a node - make it q.document
+	else if (!el.querySelector) {
+		el = [querySingle.document];
+	}
+
+	//make any ok element a list
+	else {
+		el = [el];
+	}
+
+	return qPseudos(el, selector);
+}
+
+
+/** Query single element - no way better than return first of multiple selector */
+function querySingle(selector, el){
+	return queryMultiple(selector, el)[0];
+}
+
+
+/**
+ * Return query result based off target list.
+ * Parse and apply polyfilled pseudos
+ */
+function qPseudos(list, selector) {
+	//ignore empty selector
+	selector = selector.trim();
+	if (!selector) return list;
+
+	// console.group(selector);
+
+	//scopify immediate children selector
+	if (selector[0] === '>') {
+		if (!pseudos.scope) {
+			//scope as the first element in selector scopifies current element just ok
+			selector = ':scope' + selector;
+		}
+		else {
+			var id = getUid();
+			list.forEach(function(el){el.setAttribute('__scoped', id);});
+			selector = '[__scoped="' + id + '"]' + selector;
+		}
+	}
+
+	var pseudo, pseudoFn, pseudoParam, pseudoParamId;
+
+	//catch pseudo
+	var parts = paren.parse(selector);
+	var match = parts[0].match(pseudoRE);
+
+	//if pseudo found
+	if (match) {
+		//grab pseudo details
+		pseudo = match[1];
+		pseudoParamId = match[2];
+
+		if (pseudoParamId) {
+			pseudoParam = paren.stringify(parts[pseudoParamId.slice(1)], parts);
+		}
+
+		//pre-select elements before pseudo
+		var preSelector = paren.stringify(parts[0].slice(0, match.index), parts);
+
+		//fix for query-relative
+		if (!preSelector && !mappers[pseudo]) preSelector = '*';
+		if (preSelector) list = qList(list, preSelector);
+
+
+		//apply pseudo filter/mapper on the list
+		pseudoFn = function(el) {return pseudos[pseudo](el, pseudoParam); };
+		if (filters[pseudo]) {
+			list = list.filter(pseudoFn);
+		}
+		else if (mappers[pseudo]) {
+			list = unique(arrayify(list.map(pseudoFn)));
+		}
+
+		//shorten selector
+		selector = parts[0].slice(match.index + match[0].length);
+
+		// console.groupEnd();
+
+		//query once again
+		return qPseudos(list, paren.stringify(selector, parts));
+	}
+
+	//just query list
+	else {
+		// console.groupEnd();
+		return qList(list, selector);
+	}
+}
+
+
+/** Apply selector on a list of elements, no polyfilled pseudos */
+function qList(list, selector){
+	return unique(arrayify(list.map(function(el){
+		return slice(el.querySelectorAll(selector));
+	})));
+}
+
+
+/** Registered pseudos */
+var pseudos = {};
+var filters = {};
+var mappers = {};
+
+
+/** Regexp to grab pseudos with params */
+var pseudoRE;
+
+
+/**
+ * Append a new filtering (classic) pseudo
+ *
+ * @param {string} name Pseudo name
+ * @param {Function} filter A filtering function
+ */
+function registerFilter(name, filter, incSelf){
+	if (pseudos[name]) return;
+
+	//save pseudo filter
+	pseudos[name] = filter;
+	pseudos[name].includeSelf = incSelf;
+	filters[name] = true;
+
+	regenerateRegExp();
+}
+
+
+/**
+ * Append a new mapping (relative-like) pseudo
+ *
+ * @param {string} name pseudo name
+ * @param {Function} mapper map function
+ */
+function registerMapper(name, mapper, incSelf){
+	if (pseudos[name]) return;
+
+	pseudos[name] = mapper;
+	pseudos[name].includeSelf = incSelf;
+	mappers[name] = true;
+
+	regenerateRegExp();
+}
+
+
+/** Update regexp catching pseudos */
+function regenerateRegExp(){
+	pseudoRE = new RegExp('::?(' + Object.keys(pseudos).join('|') + ')(\\\\[0-9]+)?');
+}
+
+
+
+/** Exports */
+querySingle.all = queryMultiple;
+querySingle.registerFilter = registerFilter;
+querySingle.registerMapper = registerMapper;
+
+/** Default document representative to use for DOM */
+querySingle.document = doc;
+
+
+module.exports = querySingle;
+},{"array-unique":4,"arrayify-compact":5,"get-doc":11,"get-uid":12,"mutype/is-array":29,"mutype/is-array-like":28,"mutype/is-string":31,"parenthesis":32,"sliced":44}],38:[function(require,module,exports){
+var q = require('..');
+
+function has(el, subSelector){
+	return !!q(subSelector, el);
+}
+
+module.exports = has;
+},{"..":37}],39:[function(require,module,exports){
+/** :matches pseudo */
+
+var q = require('..');
+
+function matches(el, selector){
+	if (!el.parentNode) {
+		var fragment = q.document.createDocumentFragment();
+		fragment.appendChild(el);
+	}
+
+	return q.all(selector, el.parentNode).indexOf(el) > -1;
+}
+
+module.exports = matches;
+},{"..":37}],40:[function(require,module,exports){
+var matches = require('./matches');
+
+function not(el, selector){
+	return !matches(el, selector);
+}
+
+module.exports = not;
+},{"./matches":39}],41:[function(require,module,exports){
+var q = require('..');
+
+module.exports = function root(el){
+	return el === q.document.documentElement;
+};
+},{"..":37}],42:[function(require,module,exports){
+/**
+ * :scope pseudo
+ * Return element if it has `scoped` attribute.
+ *
+ * @link http://dev.w3.org/csswg/selectors-4/#the-scope-pseudo
+ */
+
+module.exports = function scope(el){
+	return el.hasAttribute('scoped');
+};
+},{}],43:[function(require,module,exports){
 /*jslint onevar:true, undef:true, newcap:true, regexp:true, bitwise:true, maxerr:50, indent:4, white:false, nomen:false, plusplus:false */
 /*global define:false, require:false, exports:false, module:false, signals:false */
 
@@ -1373,6 +1871,428 @@ function extend() {
     }
 
 }(this));
+
+},{}],44:[function(require,module,exports){
+module.exports = exports = require('./lib/sliced');
+
+},{"./lib/sliced":45}],45:[function(require,module,exports){
+
+/**
+ * An Array.prototype.slice.call(arguments) alternative
+ *
+ * @param {Object} args something with a length
+ * @param {Number} slice
+ * @param {Number} sliceEnd
+ * @api public
+ */
+
+module.exports = function (args, slice, sliceEnd) {
+  var ret = [];
+  var len = args.length;
+
+  if (0 === len) return ret;
+
+  var start = slice < 0
+    ? Math.max(0, slice + len)
+    : slice || 0;
+
+  if (sliceEnd !== undefined) {
+    len = sliceEnd < 0
+      ? sliceEnd + len
+      : sliceEnd
+  }
+
+  while (len-- > start) {
+    ret[len - start] = args[len];
+  }
+
+  return ret;
+}
+
+
+},{}],46:[function(require,module,exports){
+
+// for compression
+var win = window;
+var doc = document || {};
+var root = doc.documentElement || {};
+
+// detect if we need to use firefox KeyEvents vs KeyboardEvents
+var use_key_event = true;
+try {
+    doc.createEvent('KeyEvents');
+}
+catch (err) {
+    use_key_event = false;
+}
+
+// Workaround for https://bugs.webkit.org/show_bug.cgi?id=16735
+function check_kb(ev, opts) {
+    if (ev.ctrlKey != (opts.ctrlKey || false) ||
+        ev.altKey != (opts.altKey || false) ||
+        ev.shiftKey != (opts.shiftKey || false) ||
+        ev.metaKey != (opts.metaKey || false) ||
+        ev.keyCode != (opts.keyCode || 0) ||
+        ev.charCode != (opts.charCode || 0)) {
+
+        ev = document.createEvent('Event');
+        ev.initEvent(opts.type, opts.bubbles, opts.cancelable);
+        ev.ctrlKey  = opts.ctrlKey || false;
+        ev.altKey   = opts.altKey || false;
+        ev.shiftKey = opts.shiftKey || false;
+        ev.metaKey  = opts.metaKey || false;
+        ev.keyCode  = opts.keyCode || 0;
+        ev.charCode = opts.charCode || 0;
+    }
+
+    return ev;
+}
+
+// modern browsers, do a proper dispatchEvent()
+var modern = function(type, opts) {
+    opts = opts || {};
+
+    // which init fn do we use
+    var family = typeOf(type);
+    var init_fam = family;
+    if (family === 'KeyboardEvent' && use_key_event) {
+        family = 'KeyEvents';
+        init_fam = 'KeyEvent';
+    }
+
+    var ev = doc.createEvent(family);
+    var init_fn = 'init' + init_fam;
+    var init = typeof ev[init_fn] === 'function' ? init_fn : 'initEvent';
+
+    var sig = initSignatures[init];
+    var args = [];
+    var used = {};
+
+    opts.type = type;
+    for (var i = 0; i < sig.length; ++i) {
+        var key = sig[i];
+        var val = opts[key];
+        // if no user specified value, then use event default
+        if (val === undefined) {
+            val = ev[key];
+        }
+        used[key] = true;
+        args.push(val);
+    }
+    ev[init].apply(ev, args);
+
+    // webkit key event issue workaround
+    if (family === 'KeyboardEvent') {
+        ev = check_kb(ev, opts);
+    }
+
+    // attach remaining unused options to the object
+    for (var key in opts) {
+        if (!used[key]) {
+            ev[key] = opts[key];
+        }
+    }
+
+    return ev;
+};
+
+var legacy = function (type, opts) {
+    opts = opts || {};
+    var ev = doc.createEventObject();
+
+    ev.type = type;
+    for (var key in opts) {
+        if (opts[key] !== undefined) {
+            ev[key] = opts[key];
+        }
+    }
+
+    return ev;
+};
+
+// expose either the modern version of event generation or legacy
+// depending on what we support
+// avoids if statements in the code later
+module.exports = doc.createEvent ? modern : legacy;
+
+var initSignatures = require('./init.json');
+var types = require('./types.json');
+var typeOf = (function () {
+    var typs = {};
+    for (var key in types) {
+        var ts = types[key];
+        for (var i = 0; i < ts.length; i++) {
+            typs[ts[i]] = key;
+        }
+    }
+
+    return function (name) {
+        return typs[name] || 'Event';
+    };
+})();
+
+},{"./init.json":47,"./types.json":48}],47:[function(require,module,exports){
+module.exports={
+  "initEvent" : [
+    "type",
+    "bubbles",
+    "cancelable"
+  ],
+  "initUIEvent" : [
+    "type",
+    "bubbles",
+    "cancelable",
+    "view",
+    "detail"
+  ],
+  "initMouseEvent" : [
+    "type",
+    "bubbles",
+    "cancelable",
+    "view",
+    "detail",
+    "screenX",
+    "screenY",
+    "clientX",
+    "clientY",
+    "ctrlKey",
+    "altKey",
+    "shiftKey",
+    "metaKey",
+    "button",
+    "relatedTarget"
+  ],
+  "initMutationEvent" : [
+    "type",
+    "bubbles",
+    "cancelable",
+    "relatedNode",
+    "prevValue",
+    "newValue",
+    "attrName",
+    "attrChange"
+  ],
+  "initKeyboardEvent" : [
+    "type",
+    "bubbles",
+    "cancelable",
+    "view",
+    "ctrlKey",
+    "altKey",
+    "shiftKey",
+    "metaKey",
+    "keyCode",
+    "charCode"
+  ],
+  "initKeyEvent" : [
+    "type",
+    "bubbles",
+    "cancelable",
+    "view",
+    "ctrlKey",
+    "altKey",
+    "shiftKey",
+    "metaKey",
+    "keyCode",
+    "charCode"
+  ]
+}
+
+},{}],48:[function(require,module,exports){
+module.exports={
+  "MouseEvent" : [
+    "click",
+    "mousedown",
+    "mouseup",
+    "mouseover",
+    "mousemove",
+    "mouseout"
+  ],
+  "KeyboardEvent" : [
+    "keydown",
+    "keyup",
+    "keypress"
+  ],
+  "MutationEvent" : [
+    "DOMSubtreeModified",
+    "DOMNodeInserted",
+    "DOMNodeRemoved",
+    "DOMNodeRemovedFromDocument",
+    "DOMNodeInsertedIntoDocument",
+    "DOMAttrModified",
+    "DOMCharacterDataModified"
+  ],
+  "HTMLEvents" : [
+    "load",
+    "unload",
+    "abort",
+    "error",
+    "select",
+    "change",
+    "submit",
+    "reset",
+    "focus",
+    "blur",
+    "resize",
+    "scroll"
+  ],
+  "UIEvent" : [
+    "DOMFocusIn",
+    "DOMFocusOut",
+    "DOMActivate"
+  ]
+}
+
+},{}],49:[function(require,module,exports){
+module.exports = toArray
+
+function toArray(list, index) {
+    var array = []
+
+    index = index || 0
+
+    for (var i = index || 0; i < list.length; i++) {
+        array[i - index] = list[i]
+    }
+
+    return array
+}
+
+},{}],50:[function(require,module,exports){
+
+var space = require('to-space-case')
+
+/**
+ * Export.
+ */
+
+module.exports = toCamelCase
+
+/**
+ * Convert a `string` to camel case.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+function toCamelCase(string) {
+  return space(string).replace(/\s(\w)/g, function (matches, letter) {
+    return letter.toUpperCase()
+  })
+}
+
+},{"to-space-case":52}],51:[function(require,module,exports){
+
+/**
+ * Export.
+ */
+
+module.exports = toNoCase
+
+/**
+ * Test whether a string is camel-case.
+ */
+
+var hasSpace = /\s/
+var hasSeparator = /(_|-|\.|:)/
+var hasCamel = /([a-z][A-Z]|[A-Z][a-z])/
+
+/**
+ * Remove any starting case from a `string`, like camel or snake, but keep
+ * spaces and punctuation that may be important otherwise.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+function toNoCase(string) {
+  if (hasSpace.test(string)) return string.toLowerCase()
+  if (hasSeparator.test(string)) return (unseparate(string) || string).toLowerCase()
+  if (hasCamel.test(string)) return uncamelize(string).toLowerCase()
+  return string.toLowerCase()
+}
+
+/**
+ * Separator splitter.
+ */
+
+var separatorSplitter = /[\W_]+(.|$)/g
+
+/**
+ * Un-separate a `string`.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+function unseparate(string) {
+  return string.replace(separatorSplitter, function (m, next) {
+    return next ? ' ' + next : ''
+  })
+}
+
+/**
+ * Camelcase splitter.
+ */
+
+var camelSplitter = /(.)([A-Z]+)/g
+
+/**
+ * Un-camelcase a `string`.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+function uncamelize(string) {
+  return string.replace(camelSplitter, function (m, previous, uppers) {
+    return previous + ' ' + uppers.toLowerCase().split('').join(' ')
+  })
+}
+
+},{}],52:[function(require,module,exports){
+
+var clean = require('to-no-case')
+
+/**
+ * Export.
+ */
+
+module.exports = toSpaceCase
+
+/**
+ * Convert a `string` to space case.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+function toSpaceCase(string) {
+  return clean(string).replace(/[\W_]+(.|$)/g, function (matches, match) {
+    return match ? ' ' + match : ''
+  }).trim()
+}
+
+},{"to-no-case":51}],53:[function(require,module,exports){
+module.exports = extend
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function extend() {
+    var target = {}
+
+    for (var i = 0; i < arguments.length; i++) {
+        var source = arguments[i]
+
+        for (var key in source) {
+            if (hasOwnProperty.call(source, key)) {
+                target[key] = source[key]
+            }
+        }
+    }
+
+    return target
+}
 
 },{}]},{},[1])(1)
 });
