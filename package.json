@@ -27,6 +27,7 @@
     "insert": "~1.0.1",
     "is-element": "^0.1.0",
     "is-function": "^1.0.1",
+    "is-object": "^1.0.1",
     "is-string": "^1.0.4",
     "is-undefined": "^1.0.0",
     "mixes": "~1.0.4",

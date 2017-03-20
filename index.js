@@ -18,6 +18,7 @@ var isUndefined = require('is-undefined');
 var isString = require('is-string');
 var isFunction = require('is-function');
 var isElement = require('is-element');
+var isObject = require('is-object');
 
 /**
  * Creates or wraps a DOM element.
@@ -312,7 +313,7 @@ mixes(SpookyElement, {
         if (!signal) throw new Error('Signal was not provided');
         if (!handler) throw new Error('handler funciton was not provided');
         if (!this._addedSignals) this._addedSignals = [];
-        if (_.isObject(context)) handler = handler.bind(context);
+        if (isObject(context)) handler = handler.bind(context);
         var signalObj = {
             signal: signal,
             handler: handler
