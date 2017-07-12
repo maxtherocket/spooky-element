@@ -233,18 +233,30 @@ mixes(SpookyElement, {
 
     addClass: function(clas){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
+        if (this.view instanceof SVGElement){
+            throw new Error("Trying to add a class to an SVG element, which won't work on Firefox");
+            return this;
+        }
         elementClass(this.view).add(clas);
         return this;
     },
 
     removeClass: function(clas){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
+        if (this.view instanceof SVGElement){
+            throw new Error("Trying to remove a class from an SVG element, which won't work on Firefox");
+            return this;
+        }
         elementClass(this.view).remove(clas);
         return this;
     },
 
     hasClass: function(clas){
         if (!this.view) throw new Error(NO_VIEW_ERROR_MSG);
+        if (this.view instanceof SVGElement){
+            throw new Error("Trying to check if a class exists on an SVG element, which won't work on Firefox");
+            return this;
+        }
         return elementClass(this.view).has(clas);
     },
 

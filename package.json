@@ -1,6 +1,6 @@
 {
   "name": "spooky-element",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "A lightweight DOM element wrapper with only the essentials (css, on, off, append, prepend ...)",
   "main": "index.js",
   "scripts": {
