@@ -1,6 +1,6 @@
 # spooky-element
 
-A very lightweight, jQuery-like wrapper for DOM elements, with a lot of functionality.
+A very lightweight wrapper for DOM elements, with a lot of functionality.
 
 Makes working with DOM elements a little less scary :)
 
@@ -15,6 +15,7 @@ Couldn't find anything like this, so I've put it together to help me build aweso
 
 ![SPOOKY](http://i.imgur.com/Ut23RfP.png)
 
+![Browser Stack](https://s10.postimg.org/awoz7p6l5/browser-stack.png)
 *Browser testing is provided by the awesome folks at [BrowserStack](https://www.browserstack.com)*
 
 ## Installation
